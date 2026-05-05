@@ -1,0 +1,107 @@
+<?php 
+require_once '../../includes/header.php'; 
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $payment_id = $_POST['payment_id'];
+    $invoice_id = $_POST['invoice_id'];
+    $action = $_POST['action']; 
+    
+    if ($action === 'verify') {
+        $pdo->beginTransaction();
+        try {
+            $stmt = $pdo->prepare("UPDATE payments SET verification_status = 'verified' WHERE id = ?");
+            $stmt->execute([$payment_id]);
+            
+            $pStmt = $pdo->prepare("SELECT amount FROM payments WHERE id = ?");
+            $pStmt->execute([$payment_id]);
+            $amount_paid = $pStmt->fetchColumn();
+
+            $inv = $pdo->prepare("SELECT balance_due FROM invoices WHERE id = ?");
+            $inv->execute([$invoice_id]);
+            $current_balance = $inv->fetchColumn();
+            
+            $new_balance = $current_balance - $amount_paid;
+            $status = ($new_balance <= 0) ? 'paid' : 'partial';
+            
+            $upd = $pdo->prepare("UPDATE invoices SET balance_due = ?, status = ? WHERE id = ?");
+            $upd->execute([$new_balance, $status, $invoice_id]);
+            
+            $pdo->commit();
+            $success = "Payment verified and invoice updated!";
+        } catch (Exception $e) {
+            $pdo->rollBack();
+            $error = "Error: " . $e->getMessage();
+        }
+    } else {
+        $stmt = $pdo->prepare("UPDATE payments SET verification_status = 'rejected' WHERE id = ?");
+        $stmt->execute([$payment_id]);
+        $error = "Payment proof rejected.";
+    }
+}
+
+$pendings = $pdo->query("
+    SELECT p.*, i.payable_amount, i.balance_due, u.name as student_name, u.roll_no 
+    FROM payments p 
+    JOIN invoices i ON p.invoice_id = i.id 
+    JOIN users u ON i.user_id = u.id 
+    WHERE p.verification_status = 'pending' 
+    ORDER BY p.paid_date DESC
+")->fetchAll();
+?>
+
+<div class="card card-warning card-outline">
+    <div class="card-header"><h3 class="card-title">Payment Verification Queue</h3></div>
+    <div class="card-body p-0">
+        <?php if(isset($success)): ?> <div class="alert alert-success m-3"><?= $success ?></div> <?php endif; ?>
+        <?php if(isset($error)): ?> <div class="alert alert-danger m-3"><?= $error ?></div> <?php endif; ?>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Student</th>
+                        <th>Amount Paid</th>
+                        <th>Method</th>
+                        <th>Proof Slip</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($pendings as $p): ?>
+                    <tr>
+                        <td><strong><?= htmlspecialchars($p['student_name']) ?></strong><br><small><?= $p['roll_no'] ?></small></td>
+                        <td>PKR <?= number_format($p['amount'], 2) ?></td>
+                        <td><?= $p['payment_method'] ?></td>
+                        <td>
+                            <?php if($p['proof_image']): ?>
+                                <a href="../../<?= $p['proof_image'] ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-image me-1"></i> View Slip
+                                </a>
+                            <?php else: ?>
+                                <span class="text-muted">No image</span>
+                            <?php endif; ?>
+                        </td>
+                        <td class="text-center">
+                            <form method="POST" class="d-inline">
+                                <input type="hidden" name="payment_id" value="<?= $p['id'] ?>">
+                                <input type="hidden" name="invoice_id" value="<?= $p['invoice_id'] ?>">
+                                <button type="submit" name="action" value="verify" class="btn btn-sm btn-success">
+                                    <i class="bi bi-check-circle me-1"></i> Approve
+                                </button>
+                                <button type="submit" name="action" value="reject" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-x-circle me-1"></i> Reject
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if(empty($pendings)): ?>
+                        <tr><td colspan="5" class="text-center py-4 text-muted">No pending payments for verification.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<?php require_once '../../includes/footer.php'; ?>

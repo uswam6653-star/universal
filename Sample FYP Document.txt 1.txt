@@ -1,0 +1,1025 @@
+
+
+Project Report
+
+XXXX  Campus On Mobile[Write Title of your project] XXXX
+_______________________________
+
+
+Submitted by
+XXXX Student Name XXXX (XXXX Reg NOXXXXX)
+Session  XXXX 2015-2019 XXXX
+
+
+Supervised by
+Umair Waqas
+
+
+
+
+
+
+
+
+
+
+Department of Business Administration,   
+University of Sahiwal, Sahiwal
+
+
+Campus On Mobile
+
+
+
+
+A project submitted to the
+
+Department of Business Administration
+
+In
+
+Partial Fulfilment of the Requirements for the
+
+Bachelor’s Degree in Information Systems
+
+By
+
+XXXX Student Name XXXX
+
+
+
+
+
+
+
+
+Internal Supervisor	
+Mr. Umair Waqas		_______________________
+Lecturer	
+Department of Business Administration	
+
+
+
+External Examiner
+	___________________
+
+
+
+
+Chairperson		
+Dr. Waris Ali	_______________________
+Chairperson,	
+Department of Business Administration	
+
+
+COPYRIGHTS
+This is to certify that the project titled “XXXX Title XXXX” is the genuine work carried out by XXXX Student Name XXXX , student of BBIS of Business Administration Department, University of Sahiwal, Sahiwal during the academic year XXXX 2015-19 XXXX, in partial fulfilment of the requirements for the award of the Bachelor of Information Systems degree, and that the project has not previously formed the basis for the award of any other degree, diploma, fellowship, or any other similar title.
+
+
+
+
+XXXX Student Name XXXX____________
+
+
+
+
+
+DECLARATION 
+This is to declare that the project entitled “XXXX Campus on mobile XXXX” is an original work done by undersigned, in partial fulfilment of the requirements for the degree “Bachelors of Information Systems” at Business Administration Department, University of Sahiwal, Sahiwal. 
+All the analysis, design and system development have been accomplished by the undersigned. Moreover, this project has not been submitted to any other college or university.
+
+
+XXXX Student Name XXXX________________
+
+
+
+
+
+ACKNOWLEDGEMENTS 
+First and foremost, we are grateful to Allah Almighty, who blessed us with the health, ability, and guidance to complete this project successfully. Nothing could have been achieved without His help.
+We express our sincere gratitude to our loving parents and teachers whose support enabled us to reach this stage. We also extend our appreciation to our Head of Department, Dr. Waris Ali, and our Coordinator, Dr. Atif, for their valuable support and guidance throughout our studies.
+Finally, we would like to extend special thanks to Mr. Umair Waqas for providing us with an excellent learning experience during this project. His constructive feedback inspired us to explore new ideas and techniques
+ 
+
+
+DEDICATION
+We would like to dedicate this accomplishment offline to our beloved and caring Parents, friends and to our teachers with the support of whom I am standing at this step of my life stairs.
+We also dedicate this dissertation to Mr. Umair Waqas who has supported us throughout the process.
+
+
+    Table of Contents
+Chapter 1	1
+Introduction	1
+1.1 Background	1
+1.2 Tools and technology used	2
+1.2.1 External Interface Requirements	2
+1.3 Summary of Requirements ((SR) Initial Requirements)	3
+1.3.1 Teachers and students account management:	3
+1.3.2 Processing Data	3
+1.3.3 Communication between Admin, teacher and Student	3
+1.3.4 Record Management	3
+1.3.5 Reviews by student	3
+1.4 Gantt chat	4
+1.5 Project / Product Feasibility Report (PFR):	4
+1.5.1 Technical Feasibility:	4
+1.5.2 Operational Feasibility:	4
+1.5.3 Economic Feasibility:	5
+1.5.4 Schedule Feasibility:	5
+1.5.5 Specification Feasibility:	5
+1.5.6 Motivational Feasibility:	6
+1.5.7 Legal & Ethical Feasibility:	6
+Chapter 2	7
+Problem Defining	7
+2.1 Problem of class timetable	7
+2.2  problem of re-scheduling	7
+2.3 Communication problem between student and teacher	8
+2.4 complaints and queries	8
+2.5 Registration area	8
+2.6 Slowness	9
+2.7 Misallocation	9
+2.8 Collision	9
+2.9 Re-Scheduling of Examination Papers (ROEP)	9
+2.10 Reduction of Extra Classes	9
+Chapter 3	10
+Software Requirement Specification	10
+3.1 Introduction	10
+3.1.1 Purpose	10
+3.1.2 Document Convention	10
+3.1.3 Intended Audience	10
+3.1.4 Project Scope	11
+3.2 Overall Description	11
+3.2.1 Project perspective	11
+3.2.2 Project Function	12
+3.2.3 User Classes and Characteristics	12
+3.2.4 Operating Environment (OE)	12
+3.2.5 Design and Implementation Constraints (DCI)	12
+3.3 User Documentation	13
+3.4 Assumptions and Dependencies (AD)	13
+3.5 External Interface Requirements	14
+3.5.1 User Interfaces	14
+3.5.2 Software Interfaces	14
+3.5.3 Communication Interfaces	15
+3.6 Project Features	15
+3.6.1 Timetable management	15
+3.6.2 Communication System	16
+3.6.3 Feedback System	16
+3.7 Other Non-functional features	17
+3.7.1 Performance Requirements	17
+3.7.2 Safety Requirements	17
+3.8 Security Requirements	18
+3.9 Software Quality Attributes(SQA)	18
+3.9.1 Correctness	18
+3.9.2 Reliability	18
+3.9.3 Suitability	19
+3.9.4 Learnability	19
+3.9.5 Robustness	19
+3.10 Business Rules	19
+Chapter 4	21
+Methodology	21
+4.1 Tools	21
+4.2 Software Specifications	21
+4.3 Hardware Specifications	22
+Chapter 5	23
+Detailed Design & Architecture	23
+5.1 Introduction	23
+5.2 System Architecture	23
+5.2.1   Architecture Design & Approach	23
+5.2.2   Architecture Design	24
+5.2.3   Subsystem Architecture	24
+5.3 Detailed System Design	24
+5.3.1   Classification	25
+5.3.2    Definition	25
+5.3.3    Responsibilities	25
+5.3.4   Constraints	26
+5.3.5   Composition	26
+5.3.6    Interaction	26
+5.3.7    Resources	27
+5.3.8    Processing	27
+5.3.9    Interface/Exports	28
+5.3.10   Detailed Subsystem Design	28
+Chapter 6	34
+Implementation & Testing	34
+6.1 Introduction:	34
+6.1.1Project Management	34
+6.1.2 Risk Management Plan	34
+6.2 Test Plans	35
+6.2.1 Test Plan of Main Menu Screen	35
+6.2.2 Test Plan of Login Screen	36
+6.2.3 Test Plan of Signup Screen	37
+6.2.4 Test Plan of Home page	38
+6.2.5 Test Plan of Feedback	39
+6.2.6 Test Plan of Timetable Screen	40
+6.2.7 Test Plan of  Communication	40
+6.2.8 Test Plan of  Attendance Monitoring	41
+Chapter7	43
+Results & Discussions	43
+7.1	Register Activity	43
+7.2	Login Activity.	44
+7.3	Admin Login Activity	45
+7.4	Student Home Activity	46
+7.5	Teacher Home Activity	46
+7.6	Admin Home Activity	47
+Chapter 8	48
+Conclusion & Future Work	51
+8.1 Conclusion & Scope	51
+8.2 Lesson Learnt	51
+8.3 Check Objectives	52
+References	53
+
+
+
+
+LIST OF TABLE
+
+Table 1 Hardware Interface	2
+Table 2 Software Interface	2
+Table 3 Software Specifications	21
+Table 4 Hardware Specifaction	22
+Table 5 Admin Input Strategies	30
+Table 6 Admin output Strategies	30
+Table 7 User input Strategies	30
+Table 8 User output Strategies	30
+Table 9Risk Management	35
+Table 10 Check Objectives	52
+
+
+
+LIST OF FIGURE
+Figure 1 Gantt chat	4
+Figure 2Admin Use Case Diagram	29
+Figure 3User Use Case Diagram	29
+Figure 4ER Diagram	31
+Figure 5 Sequance Diagram	32
+Figure 6Component Diagram	32
+Figure 7Architecture Diagram	33
+Figure 8Teacher registration	43
+Figure 9Sstudent register	44
+Figure 10Login Activity	44
+Figure 11admin login activity	45
+Figure 12teacher panel	46
+Figure 13admin Panel	47
+Figure 14admin home	47
+Figure 15Timetable Activity	48
+Figure 16View Feedback	48
+Figure 17Admin add timetable	49
+Figure 18Admin add subject	49
+Figure 19Dashboard code	50
+Figure 20dashboard code2	50
+
+
+LIST OF ABBREVIATION
+SR	Summary of Requirements
+PFR	Project / Product Feasibility Report
+OE	Operating Environment
+CMS	Communication Management System
+SQA	Software Quality Attributes
+RMP	Risk Management Plan
+FR	Function Requirement 
+MS	Monitoring System
+FS	Feedback System
+ROEP	Re-Scheduling of examination papers
+
+ROEC	Reduction Of Extra Classes
+AD	Assumptions and Dependencies
+
+
+
+Abstract
+The project idea is an android app which is useful for students, teachers as well as the university management. There are many objectives hidden behind this idea, it is a long term and evolving idea with time for which we are developing the base. we are developing a system for our university which include attendance and time table management, communication system for students verses higher authorities and vice  verse ,feedback system where students can give comments related to any activity happening in the university. Examination system is about effectively automate and streamline ,it has been designed to make the examination processes easier and paper free. All information is stored in cloud services. Any student, faculty or admin having account allowed to log-in the app and do the allowed activities. This is the base idea behind smart campus. There are many perspectives behind this project, it's a long time, and by this point we are developing this basis. The proposed application involves a system for academic intuitions, including time table management systems, communication systems, and federation systems and observation systems. This is an important idea behind smart campuses. In addition, it will be helpful for students and staff because time organization systems can be posted in new class schedule, cancelled the current class and can be posted for other changes in the timeline. Time table management system is required for the planning time of schools, colleges and universities. A new class schedule system can be deployed, to cancel existing classes and to make other changes to the timetables. It's easy and saves time and energy.
+
+
+
+Chapter 1 
+Introduction 
+This application is an android based and also useful for students, teachers and campus management because everyone should be punctual and with the help of timetable system this can be easy to be on time. Taking students attendance by teachers during each class is a time consuming process especially when classes have huge strength. Some faculty policies require this task to be performed by the instructor in each lecture. Examination system handle’s operation like defining class wise examination scheme and grading or passing criteria. And it helps students to have their online/office exam. This way, the system will save not only time but also efforts that were supposed to be put by instructors during each lecture. It will speed up the process of taking attendance and leave much time for the lecture to be given properly. The proposed system also take care of having records online and also helpful for getting notification so it would be beneficial for both students and teachers to get information through this. Students can easily find out teachers by the feature of time table and this confusion would be removed that teachers is present or not in the institute.
+1.1 Background 
+This is the era when mobile application are taking place of websites and people are more frequently using mobile applications. They found it more feasible and interesting as far as compared to websites. With the single click they move into their required application, all they need is a WiFi or 3G/4G connection and it’s common used by everyone nowadays. This mobile application has been developed to eliminate the time and effort wasted in checking  attendances manually, rescheduling and timetable distribution or changes made in University of Sahiwal.  It also reduces the number of paper resources needs in participation information management. 
+It is known that it is difficult for university management to maintain a vast range of record and tackle the students and teachers issues. Sometimes it becomes so much difficult to convey a minor message to the particular class students regarding rescheduling and timetable changes or class cancellations in the required time. Most of the students get aware of and some don’t. Through this application more problems regarding academic schedules, class cancellations, changes in timetable, teacher student communication distances and simple queries of students towards university management can be solved and could be managed easily at any place, anytime by the relevant person. A simple notification on the application is more than enough for everyone to divert an attention towards a person to get to about new updates from management. Less energy and time saving application will be beneficial for all university management as well as for teachers and students. 
+1.2 Tools and technology used
+The main tools and technologies used for developing this application include
+?Android Studio
+?Java
+?XML
+?Firebase
+?Wi-Fi or Mobile Data	
+?Google API
+1.2.1 External Interface Requirements
+  1.  User Interface
+?GUI along with meaningful frames and button
+   2. Hardware Interface
+
+Hardware Environment	Core i5 2nd generation
+System Configuration	RAM -8GB HDD-100GB
+Operating system	Windows 10
+                                                                                  Table 1 Hardware Interface
+   3. Software Interface
+Front End	XML
+Back End	JAVA
+                                                                               Table 2 Software Interface
+
+
+
+1.3 Summary of Requirements ((SR) Initial Requirements)
+
+1.3.1 Teachers and students account management:
+Teachers and students  must be able to register himself to the system by requesting for registration. There should have to be two types of registration, as teacher  and as students. Both teacher  and student must provide their personal details like name, email, contact, password in registration request process. All the requests are to be viewed by the admin. As the whole data will be saved in Firebase Authentication as backup profile which will be managed by the admin of the university. In response to the a message will appear on the screen. After successful verification student and teacher will login to the system automatically. Student and teacher can also update their personal details. Student and teacher can upload their profile picture for identification. 
+1.3.2 Processing Data
+ Students can see their  class schedule and  can check their attendance  that he wishes to see. Whole data will be characterised according to the class timetable and date wise. But the whole timetable and class schedule can only be manage by the admin. Sudden change in schedule of class timings can only be done by admin. 
+1.3.3 Communication between Admin, teacher and Student 
+Queries box will be appear in every student, teacher profile where they can ask question to the admin, teacher and student regarding problem or feedback about the application or any other relevant question regarding studies or lectures from respective teacher . It will be a medium of communication between them and it will be saved as record in the profile. 
+1.3.4 Record Management
+Admin must have the access to all the personal information provided by the  student  and teacher . Admin must have the record of all the schedule  placed and requested by the teacher or student. 
+1.3.5 Reviews by student 
+After checking the schedule, timetable or attendance student can leave their question or giving feedback about teachers and university. 
+
+
+1.4 Gantt Chart
+
+                                                                                              Figure 1 Gantt chat	
+1.5 Project / Product Feasibility Report (PFR)
+A project idea hands down several insights for an in-depth investigation to further analyse the project. Hence there is a need to conduct a feasibility study by exploring many aspects of the project. A feasibility report has been prepared for Online Campus Depot Android application, addressing the following feasibilities:
+1.Technical
+2.Operational
+3.Economic
+4.Schedule
+5.Specification
+6.Information
+7.Motivational
+8.Legal and Ethical
+1.5.1 Technical Feasibility
+With the general analysation about all the technical aspects of our project and we have a keen trust that our team possess all those skill which are required for this project. Our project uses an android studio and java. In this project mobile data and WIFI application is also use to access the data services. We keenly hope that, by working upon as a team work we will complete this application. We have use firebase database authentication to make ensure the authentication of the data use by the user, by using all this features we are sure that application will run accordingly as we did we need it.
+1.5.2 Operational Feasibility
+The design application is operational for all university management, teachers and students. Their are two types of user in this application and both can access their required  information. Administration can access the student and teacher profile and work or fulfil their requirement per demand under the rules of university management. Same as like  the  other user in which teachers and students are high lighted they can communicate and access their attendance record, timetable and schedule. This university facilities the both university management, students and teachers. It will be helpful in resolving the minor issues regarding student requirement. Feedback and other facilities like attendance record, rescheduling and timetable can be seen individually by the user at any place with in single second on one click.  
+1.5.3 Economic Feasibility
+This application requires no special technology that can have any extra cost. Economically, the system can be categorized as follows:
+Cost Estimates:
+1.Android phone: Rs.8, 000/-
+2.Internet Connection: Rs. 6,000 /- (6 months)
+3.Total External Cost: Rs.14, 000/-
+Benefits Estimates
+General students and teachers having basic knowledge about using Android phones can benefit from this application.
+1.5.4 Schedule Feasibility
+An effective schedule plan has been worked out during project initiation phase (Gantt chart). We have discussed the real world scenarios and project’s overall situation and project activities have been analysed accordingly. This project serves to be the capstone project for MCS program at LGU, therefore deadlines of different deliverables have been set with LGU Project Office’s requirements. Project team is adhering to the schedule with very little changes, if required. We aim to complete the project within the planned deadlines.
+1.5.5 Specification Feasibility
+This major aspects and requirement of our project are clear enough to understand that it is a purposeful development. We have also evaluated the scope boundaries. Requirements are the features the system must have or a restrain that must be accepted to facilities the users. This proposed system will be able to give authentic information to the users (teacher and students)by providing requested information and support all functional component that are essential features which must be fulfilled by the end of project. Our application needs to have an android device with version 5.1 or above.
+1.5.6 Motivational Feasibility
+Online Attendance record, timetable updates and rescheduling is serving as a crowing achievement project at LGU, so the project team is self-motivated to achieve their deadlines by doing the right things in the right time and place. The project advisor is highly involved in all the project phases. Resource allocation has been done after analysing the skill sets and interests of team members so that at any point in the project, no one gets de-motivated.
+1.5.7 Legal & Ethical Feasibility
+The application is a unique idea in itself and also it facilitates general mobile phone user. It abides by all the legal laws provided by Govt. of Pakistan in the constitution as we are using open source technologies which are easily downloadable and other software are available in LGU labs there is no violation of copyrights issues. Moreover, we are not accessing any uninformed personal data of user which can be misused in any means.
+
+
+Chapter 2 
+Problem Defining
+In every school, college university or other academic institutions and offices to be on time at that place plays important role in daily life. A student should be on time in university first of all for letting teacher to mark attendance and same in other cases. The major problem is that it is so hectic and meaningless to go to notice board regularly for knowing about updating in timetable sometimes because of so many university notices it is difficult to find timetable.
+The organization currently has inefficient Timetable management system. They find it hectic and time taking process. Mainly, manually storing records of students and employees is hard and also communication is difficult between student and faculty because of their busy time table scheduling. Getting feedback from students is also necessary for teacher and course development. In Examination management system, we face difficulties for getting results.
+2.1 Problem of class timetable 
+Right now University of Sahiwal is using the criteria of pasting the timetable on    the classes and office bulletin board and students have to approach to the board to check their relevant class timetable. This is also a hectic for a student and even for a teacher. Because sometimes university management has to change the timetable accordingly to the shortage or unavailability of teacher. Or sometimes due to sudden shutdown of university in response of city situation. At that time most of the students and teachers don’t get the new timetable on time and most of the students miss their classes. It’s not easy for each and every student in person to go and check the bulletin board every time if the timetable has been changed or still not work upon it.
+2.2  problem of re-scheduling
+These days in University of Sahiwal the same criteria re scheduling is still an old one, by conveying message in class orally through any student or office staff. Or pasting a message on bulletin board. And again it’s a problem for both management and student. Because most of the students don’t get message on time or stay unaware about it and they go individually to the admin office to reconfirm about next scheduled class. This may happen occasionally if the teacher is suddenly not available to conduct the class and class is cancelled. Like this most of the students stay unaware,  this lead to a loss of time, money and energy. Because most of the students live far away from university and have limited resources and coming all the way long to the university does consume their financial resources. Like the they get burdened later. With this application this problem may can be resolved and management will also be in a peace of mind. Non of the student will bother them about new scheduling and asking the reason behind sudden cancellation of class. More time, energy and money will be saved as long as of student, teacher and administration all.
+2.3 Communication problem between student and teacher 
+As we know in University of Sahiwal, we have best teaching faculty and most of teacher are unavailable after class as they have to reach their other scheduled classes. In this case most of the students question are left. And sometimes when students get back home and they get stuck to any point where they need teacher guidance and they know might the teacher will be not available in next few days to answer him, at that point this app will help them out. Student can ask the question anytime and can directly communicate in this medium. As things will remain in record the level of respect may not be diploid by the student because it will known that the management can check their profile and sudden action could be taken.
+2.4 complaints and queries 
+As during the semester session most of the time students wants to convey their personal issues to the higher management but students can’t approach or might feel hesitant to talk directly. And sometimes they do convey their message in accordance to the hierarchy level but until the case or issue is conveyed to the relevant person the time is already passed. Like this a student l, teacher or administration itself can communicate anytime, from any place and give the feedback to the queries of the students and teacher. It will be a beneficial approach for everyone In university level. It would be helpful for university management to overcome with the issues of students and teachers on time.
+2.5 Registration area
+If the student will put any wrong information while signing up the account, in future he won’t be able to operate his account in a proper manner. For example while inserting the information regarding mobile number or email I’d a simple mistake in spelling can be a problem latter. As the student account could be generated and the student if forget the I’d or password cannot operate the account in future. 
+2.6 Slowness
+Manually generating timetable on daily basis makes the system of institutes slow and lazy because if timetable changes regularly its difficult to go and see boards and papers. This makes students to feel this matter useless.
+2.7 Misallocation
+Misallocation of course units, lectures time, lectures room, quizzes and assignments, practical sessions and lab sessions are always there and the management finds it hard to updates perfectly
+2.8 Collision
+ It is tough to update timetable when classes are already allocated or allotted to teachers. Sometimes at the same time classes are mismanaged and both classes are there out of room to attend the lecture so finding another room is totally problematic at that time.
+2.9 Re-Scheduling of Examination Papers (ROEP)
+In the days of exams in the campuses every student is busy in studying till last minute and teachers busy in having duties so nobody involves in going and seeing re-scheduling of exams then when the times starts there is a hurry always to go and attempt exams and if at that time, date sheets are changed the it is nothing less than a trouble.
+2.10 Reduction of Extra Classes
+Most of the time timetable is settled as the combination of some free lectures makes students. ROEC is the abbreviation of Reduction of extra classes. 
+
+
+Chapter 3 
+Software Requirement Specification
+This chapter will discuss the detail of necessary system requirements required to develop the system. It will elaborate the functional requirements and non-functional requirements.
+3.1 Introduction
+3.1.1 Purpose
+The idea of this project is an Android app that is useful for students, teachers and university management. There are many goals behind this idea, it is a long time and with the idea that we are developing this foundation. This app is developing a system for educational institutions, including time-table management system, communication system, and feedback system and monitoring system. It's the main idea behind smart campuses. Apart from this, it would be beneficial for students and staff as the time table management system can be deployed to new class schedule, cancel the current class, and be posted for other changes. It is an consentaneous requirement for planning class timings in schools, colleges and universities. The system can be implemented to set a new class, cancel an already exiting class and making other changes to a timetable. It is quite simple and more beneficial to save time and energy.
+3.1.2 Document Convention 
+In this proposed document following typographic conventions are used. This font code, variable, and error message is used for text.
+Words in bold with first letter capitalized indicate shows specific keywords.
+Words you are told to type are showing in bold.
+The font size is 12.
+The normal text typeface is used for most of the descriptive text in a specification.
+3.1.3 Intended Audience
+It is an application based open source app registered by registered students and teachers have been designated for all educational institutions using firebase and java language. Time table management system provides comfortable features for managing the time of study for students in campus. This involves communication system which can reduce delays in meetings and with the help of feedback management system managements of institutes or organizations transforms student’s feed back into actionable information and enables the distribution of that information throughout an organization. The app integrates timetable whenever changes are required and needed. Classes and courses can be settled a particular cover and time based on their quality. It will help you to schedule practical and theory classes with their timings thus providing you a qualitative timetable, helping in improves fecundity and figure of ratio.
+3.1.4 Project Scope
+Time table management can overcome and programming of university transport, deal of classes to faculty, calculating each member’s leave, modify pay scale, thus goes the list. Creating time tables are one of the biggest problems for teachers. It can be confusing and time taking when done on paper and pages. Time table management application is the efficient solution when we face any problem. Apart from creating productive timetables, timetable management system app can also make it easy for you in the all-academic and administrative management of an academic institutions. Timetable Management helps you schedule practical and ideological classes, as you provide a quality timetable to the appropriate time, improving productivity and efficiency. Time table management software, with its easy and user- friendly interface helps users. The developed system will very helpful in saving worthy time of students and teachers, paper and generating report at needed time. By using proposed system student attendance can be improved. Due to this system parents will get information about attendance of their children. This will improve the performance of student.
+3.2 Overall Description
+3.2.1 Project perspective
+Time table management application can be used to generate a new class, cancel the existing class, and making other changes to a time table. It is humble to use and saves time and energy. A skilful schedule maintains discipline by keeping the students retained and reducing time taking due to chaos and confusions. Eventually new classes can be added to or deleted from the timetable as and when required. Time table management system will evenly weigh and set aside the allocution to each faculty member thus preventing odd distribution of work amongst faculty and sustaining the adjustment. To allot faculty to the classes, announcement of an important event or coming up with a sharp change in time allocation for the management staff can be an everyday activity. Monitoring management system has marked function to improve the security, influence and positions. The proposed system also cured of having records online and also favorable for getting notification so it would be advantage for both students and teachers to get information through this. Students can simply find out teachers by the feature of time table and this conflict will be removed that teachers are present or not in the institute.
+3.2.2 Project Function
+With timetable application, it is possible for you to undoubtedly generate time tables productively, according to the requirements. Timetable management software generates time tables seeing the drawbacks such as presence of teachers, special rooms, classes etc. Project Monitoring .System is a .tool attainable via web .browser which enables .monitoring and. management of projects within the extension of works and costs. It is a tool created. for .both project managers.. and people responsible. for the management.. of the entire project. portfolio in an organization. Thus, the system is easier. In many colleges, hardware is used to take attendance like card swiping. In this technique, there are chances of making proxy entry or failure of hardware, etc. Also, there is chance of loss of card as the card is small, lightweight if the person is irresponsible.
+3.2.3 User Classes and Characteristics
+User can access the app and they can read the content.
+Also, would be able to give feedback.
+They can even manage their account and see the timetable.
+Users are allowed for queries in communication feature.
+3.2.4 Operating Environment (OE)
+This integrated application environment can be used in schools, colleges, universities and all academic institutes. It would be also applicable in offices where time table system is required usually for held meetings and taking interviews for experienced and fresh internee. The environment dependent on a user interface given by application manager and usually an API to the application manager. Hence, we have developed constructive access for building lecture course timetabling system, which can be customized to fit any timetabling issue. Also introduces practical timetable management system which is intelligent of taking care of both strong and weak constraints effectively, used in an automated timetabling system so that each student and teacher can view their timetable once they are decided for a given semester.
+3.2.5 Design and Implementation Constraints (DCI)
+ 1. Factors considered in the design
+A user-friendly system.
+A system that is capable to consider all given constraints before producing a feasible (timetable) output.
+A time effective system.
+A system that will broadcast generated timetable to listening android devices once it has been published.
+1.Output Design
+The output design contains all the necessary details of the processed input by the system which is drawn from different tables of firebase. In this case, the generated timetable is the output of the new system.
+3. Input Design
+1.The input design is the cooperation between the user and the application.
+2.Courses input design.
+3.Room input design.
+4.Lecturer input design.
+5.Building input design.
+6.Class input design.
+3.3 User Documentation
+The system has the capabilities for the integration of various courses, hall lectures, departments, programs, buildings, lectures and a few obstacles to timetable. Using the principles of this project to maximize the maximum timeline. We see that school and colleges are manually taken into attendance. Reporting is difficult. This is not an automated way where the farm can be lost and harmed. And files need some opportunities to put this counter or cabinet. Student asks fraud to ask for their attendance. This software can reduce time and see the database report and it can be reproduced instantly by the teachers. Thus, the system is easier. In many institutions, card swapping use hardware. In this situation, there are possibilities of alternate registration or fixures failures. Apart from this, the cards are likely to be as low as the size in the card is small, if weight is unacceptable, light weight.
+3.4 Assumptions and Dependencies (AD)
+It is such anxiety that the application will apply. The app includes a feedback system communication system, communication system and surveillance system for the app involved in testing the app, training operators and changing the old designated applications in the new upgrade application. Applications require high priority. The process also includes changes in an online entered time table management system. Essentially it is imperative to check new applications to present unnecessary issues that the system is created to use the system to upgrade the system. Online attendance management system is about to attend educational institutions. It facilitates access to a specific student's attendance information of a particular class. This system will also help students evaluate the quality of attendance skills. This application is designed to automate the attendance process. It also improves the communication system and helps get feedback. The staff can edit the attendance as well as record the head of the University VC or institution’s record.
+3.5 External Interface Requirements
+3.5.1 User Interfaces
+We’ve designed outer interface which shows, establish and maintains the outer interfaces required for system operation. It guides configuration management to assure that all outer interface requirement develops properly documented in correspondence with the configuration management plan and communicated to all affected configuration items.
+User interface of this app would be consisting of two buttons Email and password which is basically required for students to login themselves if they already had account or authenticated by firebase. There is another button of registration for those students who aren’t allowed to login because they have no accounts. In next activity they first register themselves by providing required information which makes them enable to go on third activity directly where we’ve student’s and teacher’s registration forms. When that form will be fulfilled and submitted they can be login easily and all that filled data will be store in firebase. After that a home page view is open.
+3.5.2 Software Interfaces
+For this mobile application java and xml are used for development.
+Software code is written in Android studio.
+Application can be run on android devices and GenY motion.
+Firebase is used for storing data.
+Timetable management application in which we have more features like communication system, feedback system and monitoring system helps to create a timetable and can upgrade management by giving feedback about the faculty and the staff of the institute or about the environment where the application would be operated or run. It advice to align a proper calendar and allots faculty as per their presence by mapping the class, sections, and teacher details feed into the system. Rearrange to a timetable management application improves security of the data as it is not affected to manipulations and increases efficiencies due to automated workplace. This project provides you a unique insight computerization of attendance registration system with the spiral model software development lifecycle technology. 
+Students & employee’s data is required for attendance system. Time table and events scheduling calendar is also required for managing events.
+The development of this software originated from the importance of records of student’s attendance that influences academic accomplishment in higher institutions of learning.
+The recommended software overcomes the inadequacy challenges of the work-intensive manual system in registering student’s attendance record.
+The web system is connected with the firebase of the records inherent in the remote server.
+The web system is also allowed to the application to be mobile responsive, thereby making it easier to explore for both lecturers and the students.
+This application is not only secured, fast in process, very efficient and reliable but also reduced pen and paper consumption in comparison with the unsecured manual approach.
+3.5.3 Communication Interfaces
+The purpose of this project is to manage the application process to establish an application management interface when it is in progress or when working in campuses, institutions and offices. This application is in a feature that students feel comfortable to ask small questions or questions about their courses, classes and lectures about their curriculum. They can communicate with others without the loss of lecturers and solve the problems of lecture time. The purpose of the project will be explained that they are actually the specific information needed for the problems. Enables the communication interface to communicate with them when information is required and the expected mode of communication message. With communication management system, where we are communication interface, the university's faculty and management can get the information needed by the students and to identify the risks and problems so that they can resolve or resolve the issues. This shows us that this project is beneficial to reduce human work and maximize performance. And according to the communication purpose timetables and data are stored, which is easy to access. Very organized in the application to run such interface.
+3.6 Project Features
+The proposed application has some important and basic features which are necessary. Profile of the application consists of the following features.
+3.6.1 Timetable management
+We help you save time to focus on what’s important. A timetable management system for businesses to efficiently measure the time spent on projects, meetings, interviews. Know where your time goes. It is especially required for the academic sessions because when there are a lot of students studying at the same place it is hard to show them a paper description of timetable. Some of them go to noticeboards somehow timetable changes due to some reasons they don’t even know but they follows the old one.
+3.6.1.1. Functional Requirements
+This is the main reason for introduction of this feature in this app. It can be solved by storing timetable online so that each of them is allowed to see where the changes will be placed.
+3.6.2 Communication System 
+In these days, when everyone needs to communicate with other in the world. Whether, for connecting professionally or socially or personally. Communication management systems (CMS) could be of two types. The first is corporate communication management system which involves systematic planning, development and implementation of new channels of communication within an organization and between two or more organizations. The other is the personal communication management system which allows users to take care of all their overlying communications of their personal and professional areas of works. Students need communication management systems which are both easy and user-friendly and can single handedly address all of their communication needs, in case of both wire line and wireless service providers. Tools which are implemented in these systems enable users to get relax because of the convenience of being connected with their work and home any time whenever they wants to do.
+3.6.2.1. Functional Requirements
+Thus, we need effective source of communication so that our messages can be passed or sent correctly, spontaneously and securely in a way such that the other person may clearly understand us. A lot consists on the proper transference of messages. The future of many companies depends on its quality to have in touch with its employees and other companies.
+3.6.3 Feedback System
+This is the software of the processes that enables organizations and institutes to centrally manage implementations of surveys while circulate management and analysis throughout the campus. Feedback services use feedback data left by students to measure teacher’s experience and improves student’s satisfaction and confidence about their studies. Feedback data is collected. A feedback service gives app owner’s permission to create feedback forms that can be customized to fit the app and placed on all pages. This allows the application users to submit feedback when they confrontation a problem or have a feature request.
+3.6.3.1. Functional Requirement
+This project required feedback system because what they feels after having meeting with one of them persons who are there to represents yours company? Were their questions are able to answer? Did they get their required answer?
+3.7 Other Non-functional features
+3.7.1 Performance Requirements
+“Performance management” requires that members of the leading team of a jury, to have focus their efforts on achieving a particular public aim.
+How much more ambitions we have, reduces our opportunities of achieving them with intelligence. It’s better to consume our energy into action and acting to improve at a time. The stronger the focus, the better and bigger the improvement. So many technical plans are hard and distended and, incidentally, not at all technical. A line surely drawn to separate the basic few outcomes that must improve now, from the legion that should wait.
+Well-off has aim of a strongest statement about making change and development. But really often audience set the aim without first having a well-designed performance measure for the particular result and performance deficit.
+Aims to achieve goals alone. No persons have much control overall the organization But working with collaborations of others, collaborating to design and make happen a change together will often generates results behind each person’s wildest dreams.
+Performance measures should be checked as rapidly as makes sense. Monitoring them year by year, to match the planned cycle, is so little and really late. When you monitor measure faster, you get feedback faster and can detect signals sooner.
+It also needs the leading team and staff to scan this data to determine how much progress they are doing forward for achieving their aim.
+The leadership team should take experience from this data also use its analysis of its data to make adjustments to their techniques.
+Needs the leadership team after it has achieved its target. To select another performance basics and create another target plus another strategy for achieving this new target.
+3.7.2 Safety Requirements
+System security is a subject within its production that gives support program risk management. It is the application of engineering and managing rules, standards and principles to make it safe. The purpose of Safety remains to maintain safety by the detecting safety related risks, escaping or control them by design and process, based on suitable system safety earliness. System safety necessities must have streams with other program needs. A balanced program tries to have controls on well-being, performance and cost. System safety program is the product of give and take. Between system safety and the other three familiar program elements of cost, schedule, and performance. However, neither can we pay for systems that cannot act due to no details and unrequired safety requirements. Safety must be placed in its correct way. A better protection balance cannot be contact unless enough and unsatisfactory conditions are enabled early enough in the program to document for the choosey of the enhanced design solution and illegal proxy. Defining satisfactory and improper risk is as imp for cost-effective accident avoidance as is detailing cost and presentation program.
+3.8 Security Requirements
+"Timetable Management system" is an effectual system which create timetable conferring to the data. The main condition of the submission is to gives the details about the block, subjects, number of labs, and total no. of era and details about the lab associate. Then the application makes the time table according to your clearance. It will help in automating the boring job of making the time table manually on papers and registers. The proposed system is totally cell phone based application. In the proposed system administrator should not worry about their late and improper management of details. All the information will be available in app. Thousands of records can be find and displayed without taking any identifying time. The implementation view of software requirements presents the real world’s explanations of processing functions and information infrastructures. In some cases, a physical appearance is developed as the prior step in software design.
+3.9 Software Quality Attributes(SQA)
+3.9.1 Correctness
+The accuracy of a software system dreads to:
+A piece of code with description.
+Self-determination of the application permitting to its software.
+This part of a sequencer turns out to be precarious when it is involved in a composite software system.
+3.9.2 Reliability
+Reliability of an arrangement is distinct as the probability that this system ensures a function for a detailed number of input involvements beneath specified input necessities in a target time intermission.
+A software system can be seen as qualitative if this test products a less fault rate.
+The blunder rate consists on the occurrence of given contributions and on the possibility that an input will lead to solution an error.
+3.9.3 Suitability
+The input needed by the user should be precise or limited to the basics only. The software app should have information. only if it. is. necessary for the functions. that the user. desires to put into. The software.. system should permits easy data input.. on the part .of the user. In such software systems, we assume particular importance.. in the uniformity, clarity. and simplicity. The results, that a software. system tells should be outcome in a clear and well-structured.. form and be easy to. integrate. The software system should .afford. the user comforts with respect. to the future usage of .app, the degree of. explanations, and the. form of presentation. of the results. Error.  Messages. must be given in a form .that is understandable for the .user. 
+3.9.4 Learnability
+The clearance and the simplicity. of the user instructions. (tutorial, you tube channels or user manual).The design of user display. The user interface should represent information as close to reality or happens in reality as possible. and permit .efficient, faster utilization. of the .software’s failures. and them problems.
+The user interface should be. structured clearly and. simply of all dead .bugs. It should explain .to the user .what the software .system should prepare, how. the separate functions. are started, what associations exist between. functions, and which .allowances might. stand up and how. they can .be modified. In .addition, the .user guide should. serve as .a mention that supports. the user in .quickly and restfully finding .the correct .answers to queries.
+3.9.5 Robustness
+Sturdiness lessens the effect of effective mistakes, wrong input data, and hardware errors.
+3.10 Business Rules
+Custom growth environments for creating business instructions with code.
+Tools to progress business rules without writing encryption.
+Tools to authenticate business rules.
+Replication environments to test new or changed business rules.
+Deployment of business rules to other platforms.
+Lifecycle and proprietorship management for business directions.
+Flexible presenting options for the stage itself.
+Pricing for a smart campus app varies and depends worryingly on the number of users.     Multiple free, open-source options happen. However, users of these systems rely on public support and are responsible for their individual hosting.
+This app is used to develop, store, edit, and execute Scheduling rules. Scheduling rules are logical statements that define the behaviour and operation of a campus daily routine. For example, “if a user cancels their class, send students a notification.” These rules may be written in process documents or embedded in applications. However, this implementation is prone to errors when rules are updated, scaled, or cloned.
+It provides tools for developing, tracking, and editing lectures. Often, these tools support both teachers and students. When these rules are completed, the app deploys the rules to other platforms, allowing users to single-source their rules.
+
+
+Chapter 4
+Methodology
+This project provides you a unique insight computerization of attendance registration system with the spiral model software development lifecycle technology. 
+1.Students & employees data is required for attendance system. Time table and events scheduling calendar is also required for managing events.
+2.The development of this software originated from the importance of records of students attendance that influences academic accomplishment in higher institutions of learning.
+3.The recommended software overcomes the inadequacy challenges of the work-intensive manual system in registering students attendance record.
+4.The web system is connected with the firebase of the records inherent in the remote server.
+5.The web system is also allowed to the application to be mobile responsive, thereby making it easier to explore for both lecturers and the students.
+This application is not only secured, fast in process, very efficient and reliable but also reduced pen and paper consumption in comparison with the unsecured manual approach.
+4.1 Tools 
+Evaluated the tools and have chosen the most suitable tool that supports the applications requirements. Like android phones are most suitable for this application to install the API and test the interface of the application. The minimum android version is 5.1 are required.
+4.2 Software Specifications
+Operating System	 Android version 5.1
+Language Tools	Android studio, xml, java, 
+Database Language	Firebase 
+                                                                  Table 3 Software Specifications
+
+4.3 Hardware Specifications
+Processor 	1.6 GHz 
+RAM 	1GB
+Hard disk drive 	16GB
+                                                                 Table 4 Hardware Specification
+
+
+Chapter 5
+Detailed Design & Architecture
+5.1 Introduction
+This chapter includes the detailed overview of application’s design and layouts at which it is working and proposed architecture about product.
+5.2 System Architecture
+The architecture of this product is all about the intangible model that describes the product’s construction, performance and more visible views of its working. It is a formal model that represents actions of the whole application and also organized in a way that supports reasoning about the structures and behaviours of the product. The fundamentals of the proposed product are structured together with its components named as features, also shows the relationship to each other according to its surrounding environment that based on the governing principles that includes in its design and evolution. It shows mapping of its feature’s functionality onto software components, and a presentation of those software components onto application that helps in human interaction with these features. The product architecture is based on the most essential, top level, strategic inventions and also decisions associated amongst overall the structure of whole system and represent their relationship during performance of any task related to this application. Product’s behaviours and characteristics is also shown by its architecture.
+A set of different components that joints with each other and creates a model for implementation on this application that is used to work for application.
+Provides easiness to understand for people who are interested to use.
+Provide valuable sources of considering architecture that may help in implementation of product.
+5.2.1   Architecture Design & Approach
+It is a billed prearrangement of application features which provides the project key for the consumers and lifecycle procedure which is intended to go through the requirements and sets itself to come across the filling of them requirements.
+Development of application for Android phones that should be smart. 
+Errors or bugs if found will be removed.
+Enhancement in the modules to keep stable in the market.
+
+5.2.2   Architecture Design
+The application structure or architecture is one of the basic thing that steals the focus of all the application. Architecture is impressive and used to attract audience when they interact with the app. It’s a most challenging stuff to us (architectures) who architects for the product according to its requirements. In the aspects of structuring or building this application architecture has only the ability to persuade users to use its complete its purpose of designing to be on time as the timetable feature is already mentioned in the application to let people know to be on time by using this product they comes to know about the scheduling of their regular routine timings. After that alone with timetable management feature also communication system and feedback system architectures are associated there in only one model having such modules inside it. Its procedural plan shows the details of the whole application and overall relationships between its components.
+5.2.3   Subsystem Architecture
+By the name of this it is easy to understand that the product’s functionality and implementation of features breaking down into smaller parts or feature that perform whole functionality individually. This application “Campus on Mobile” is the basic module or architecture in between the smaller features like timetable management system, communication system, feedback system and monitoring system plays their role and their architectures provides the basic support to the elementary module of this application. Subsystem inside the application involves different task they’ve assigned already by the app as making sure the scheduling is updated and upgraded according to the changes with time and also gives continuity and provides flow in communication between both students and faculty, the feedback system involves students to grow a positive/negative comments and reviews about the management and staff or faculty of the academic institutions, offices and campuses wherever it needs to be implemented.
+5.3   Detailed System Design
+The overall system design takes place where the whole system is refined and planned in the opinions of its specification and types of estimation. This product is designed at the basis of complete architecture which consists of phases like the main menu screen of the app “Campus on Mobile” let the user go forward into another screen as login page where user can fill the fields by putting their id’s and passwords with which they had registered themselves. If they did not registered already then that login page also designed a module to let them registered themselves first then they can be login by the assigned id itself this makes the design interactive and provides continuity and interrelationship in between different modules so that consumers can login and get themselves moving forward to home page where they can finds different features acts as activities inside the running application and choose anything they want to do or they need to see this design is implemented to make it in stream.
+5.3.1   Classification
+The basic feature of this product is Timetable management system, communication system, feedback system and monitoring system. These features are further classified and explained in such modules that defines them practically. For them information is feuded at the backend such as providing for timetable management system it is needed to secure information for providing dates, days, semester and section. And it is as it for other features proposed in the product.
+5.3.2    Definition
+Timetable is the feature that provides consistency in arranging new class and cancellation of the existing class that may not be meaningful or that is held for that batch which is passed. It is makes people related to the staff and management to stay humble and provides them ease. A skilled schedule maintains discipline by keeping the students reserved and dropping time taking due to disorder and confusions. Eventually students can also communicate with teachers with the help of communication system when required. Communication system will evenly weigh and set aside the allocution to each faculty member if the class holder teacher is busy in some meeting with the seniors of the campus they acknowledged students to provide them any TA or other teacher for neither escaping their lecture nor facing problem by students thus preventing odd distribution of work amongst faculty and sustaining the adjustment. To allot faculty to the classes, announcement of an important event or coming up with a sharp change in time allocation for the management staff can be an everyday activity. Monitoring management system has marked function to improve the security and safety, impact and situations. Students can simply find out teachers by the feature of time table and this conflict will be removed that teachers are present or not in the institute.
+5.3.3 Responsibilities
+Timetable management system
+This involves students and teachers to follow their timetable online also this is basically not letting them go here and there to find out a paper pasted on the notice board and finding out their timetable in any kind of hurry. This can makes their mood stable because of humble management system.
+Communication System
+This provides students and faculty to get interacted with each other makes them to get in touch and share the necessary information with each other. Through this it would be easy to transfer informative notes to students and to make them able to visit to teacher only when teacher is free.
+Feedback System
+Feedback system is used in this applications body that provides users to monitor and maintain the physiological activities and fill the feedback fields to get the upper management known about the reviews whatever them positive or negative.
+Monitoring System
+This feature is responsible to control the operations and performance by detecting the acts by the consumers and get alerted by some possible errors which can be considered.
+5.3.4   Constraints	
+The product is actually working on android smart phones. This can be run emulators. Students and teachers can be login by selecting their category and if the already registered email needs to get registered again by the consumer then it has the limit that a student/teacher can get into with only an official email. Timetable feature has its own limitations that it can be find out by providing section batch and semester then it would appear no fake id’s can be logged in. students can communicated with teachers in respected ways and if something gets wrong with them then the student can be traced even also teachers because the accurate information for that specific email id is secured at the backend which information is required when that email needed to get registered. Through feedback system is can be identified that which teacher is teaching with skills and already do prepare their lecture before delivering to students. Students can gives positive feedback or negative too if they are facing problems and issue with the help of this feature.
+5.3.5   Composition
+Composition of the different modules and structures made a basic Architecture of the proposed application. Every feature has its own role to be played and every feature has its own capabilities to get into the application. This provides users comforts so that they can perform different tasks at a single platform. 
+5.3.6    Interaction
+1. Timetable Management System
+?Eliminate paper based processes
+?Intuitive and user-friendly
+?Automatic timetable scheduling
+?Generate multiple timetables
+?Customization and Flexibility
+?Easy integration
+1. Communication System
+?Reduce time to go and visit
+?Clarity in messages
+?Ideas aren’t misinterpreted and convoluted
+?Removes deduction from any message
+?Pinpoint key aspects
+
+2.Feedback System
+?Reduce system’s sensitivity 
+?Reduce external disturbances
+?Involves positivity and negativity to get changes happens
+?Involves risk to choose better.
+
+3.Monitoring System
+?Detection of them issues, users faces regularly.
+?Collection of data first of all when problem occurs
+?Allow you to check the comparison
+?Storing the information for future use
+5.3.7    Resources
+?For this mobile application java and xml are used for development.
+?Software code is written in Android studio.
+?Application can be run on android devices and GenY motion.
+?Firebase is used for storing data.
+
+5.3.8    Processing
+It is an android based application build to run or android smartphones. Design of this app is structured as students can easily get into this and get themselves authenticate to use app and find their campus on mobile. About the main screen the student or teachers opens this app and then go to login page. They can only login if they are authorized because here we have this app that also have security concerns no fake identity is acceptable to the application only valid users can be logged in even if they are registered. When users logged in, in front of them a home page is visible to go and check the activity and performs those actions that you need to be and wherever you need to go and take advantages which are beneficial for users. Users can select that activity by their choice even if they want to see the timetable along with that they can communicate with the staff or they can give feedback to the higher management and also monitored by the application. On these processing application can be run in anyway.
+5.3.9    Interface/Exports
+The application’s user interface is that kind of architecture what a user can see and with which a user can interact with. This android app provides a diversity of pre-build user interface components such as organized layout objects and UI controls that allows admin to build the graphical user interface for this app. It has also provides other user interface components for other structures such as dialogues, statements and menus and also other features which are relative to the application and placed inside the app, performs different operations.
+5.3.10   Detailed Subsystem Design
+The main model of this application is the whole app starts from the main screen that represents the whole application workings under a module but we have internally in this application have semantic approaches to some smaller elements or models on which the main model is basically consists. Every model has its own modules and every module has its own classes that makes user enable to take actions against to the performance of that feature. We have already proposed that the essentially we had worked on four further features above mentioned which are the smaller modules under a major module, has their own responsibility to take users to the comfort zone and let them carry this application by showing them timetable and reduces distances by communicating with the management and staff. Feedback can be given by the students about the reviews of their teachers who teaches them also monitoring system is another smaller module and that is used in app to have a check that what is going on.
+ Use case Diagram
+The purpose of use case diagram is to show the interaction between the actors to present this campus on mobile from requirement from user perspective and show all the classification and modules used in the required application.
+
+    Actor:
+?Admin
+?User (Teacher/Student)
+
+ 
+                                                                                 Figure 2Admin Use Case Diagram
+ 
+                                                                             Figure 3User Use Case Diagram 
+
+ Activity Working
+This activity diagram is showing our dynamic aspect of the application in URL. It is describing about the flow of data and processes from one activity to the other.
+ 
+Admin Input Strategies
+Admin can login in the application
+Admin can manage the records
+Admin can edit the records 
+Admin can add time table 
+                                                                    Table 5 Admin Input Strategies
+
+Admin Output Strategies
+Home page will appear after login /registration 
+Admin can check the attendance  and edit all record as well
+                                                                   Table 6 Admin output Strategies
+User Input Strategies
+User can login in the application.
+User can see the feature of smart campus.
+Teacher user can take attendance and student user can see timetable and check attendance. 
+                                                                           Table 7 User input Strategies
+User Output Strategies
+Home page will appear after login. 
+Student can giving the feedback to the admin.
+Teachers and Students can communicate to each other..
+                                                                          Table 8 User output Strategies
+5.3.10.3 ER Diagram
+Entity relationship diagram represent a data through graphically illustrates information application entities and the relationship between admin and User. It’s an entity framework infrastructure. 
+
+
+
+                                                                                    Figure 4ER Diagram
+
+5.3.10.4 Sequence Diagram
+A sequence diagram describes that how a group of objects work together. This diagram is used by software developers to understand requirements for new software. In this diagram groups are involved to upload documentation through this given process in Campus on mobile.
+
+                                                                           Figure 5 Sequance Diagram
+5.3.10.5 Component Diagram
+
+                                                                      Figure 6Component Diagram
+5.3.10.6Architectural Diagram
+
+
+                                                                      Figure 7Architecture Diagram
+
+
+
+Chapter 6
+Implementation & Testing
+6.1 Introduction:
+In this chapter we go through a light on testing plans and implementations.
+6.1.1Project Management
+In this phase is auditioning the information, tools and techniques in project behaviour to fulfil project requirements. The project management is a related collection of processes that enables the project team to accomplish a successful project.
+Project management offers many advantages.  
+6.1.2 Risk Management Plan
+Roles and Responsibilities:
+TEAM LEADER	Muhammad Zubair Aslam
+PROJECT MANAGEMENT TEAM	M. Zubair Aslam
+Zainab Sabir
+
+Risk Management
+
+
+SR.	Designation	Description
+1	Team Leader	There will meet between the team leader and the management following two days to overview the circumstance of all undertakings to control the risk, review the experience assessments for the risk things and the endeavor list is imitated.
+2.	Risk Officer	The risk officer has the following tasks and authority:
+?Organizing and testing the risk identification and performance.
+?The project risk list is managing by him/her.
+?Inform management team of new risk objects, exposure risk decision status to management.
+3.	Project Members (assigned risk)	A project member will be assigned to the new identified risk by the risk officer; the project member will calculate the error, failure and probability for the risk factor and report the results of that analysis back to Risk Officer. The project member will also responsible for performing the steps of the plan and report to risk officer two times in a week.
+	                                                                 Table 9Risk Management
+
+6.2 Test Plans
+6.2.1 Test Plan of Main Menu Screen
+Screen Name: Registration Screen 
+Test plan ID: TC: 01 
+Application Name: Campus on Mobile 
+Engineers: M. Zubair Aslam OR Zainab Sabir
+Testing Cycle: 01 
+6.2.1.1 Purpose: 
+To check that application there we have options on the screen to go forward and must click to further proceed. 
+6.2.1.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.1.3 Environment: 
+Android Studio
+6.2.1.4 Pre-Requisite: 
+Checking Sign up Screen. 
+6.2.1.5 Strategy: 
+?Click on “Registration” button to make yourself registered on that application and after that go to that same login page where you clicked for registration. 
+?Click on “teacher” button on registration page to get login by the teacher screen.
+?Click on “student” button on registration page to get login bye the student screen.
+6.2.1.6 Expected Results: 
+Related screen displayed properly by clicking button. 
+6.2.1.7 Observation: 
+Related forms are displayed on clicking the buttons. 
+Description is displayed. 
+Result: Sign up screen has no bug. Re-Test-Result: As above
+6.2.2 Test Plan of Login Screen
+Screen Name: Login Screen 
+Test plan ID: TC: 02 
+Application Name: Campus on Mobile
+Engineers: M. Zubair OR Zainab Sabir
+Testing Cycle: 01 
+6.2.2.1 Purpose:
+ To check that application there we have options on the screen to go forward and must click to further proceed. 
+6.2.2.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.2.3 Environment: 
+Android Studio
+6.2.2.4 Pre-Requisite: 
+Checking Login Screen. 
+6.2.2.5 Strategy: 
+?Fill all required fields. 
+?Click on “Email” button to write your email there with you’ve registered yourself. 
+?Click on “password” button to write your password there. 
+6.2.2.6 Expected Results: 
+Related screen displayed properly by clicking button. 
+6.2.2.7 Observation: 
+?Related forms are displayed on clicking the buttons. 
+?Description is displayed. 
+Result: Login screen has no bug. 	Re-Test-Result: As above
+6.2.3 Test Plan of Signup Screen
+Screen Name: Forgot password
+Test plan ID: TC: 03
+Application Name: Campus on Mobile 
+Engineers: M. Zubair OR Zainab Sabir
+Testing Cycle: 01 
+6.2.3.1 Purpose: 
+To check that application there we have options on the screen to go forward and must click to further proceed. 
+6.2.3.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.3.3 Environment: 
+Android Studio
+6.2.3.4 Pre-Requisite: 
+Checking Signup Screen. 
+6.2.3.5 Strategy: 
+?Click on “Forgot password” button to signup new user. 
+?Click on “Old password” button to check authentication.
+?Click on “New password” button to set a new password.
+?Click on “Reset” button to make changes happens.  
+6.2.3.6 Expected Results: 
+Related screen displayed properly and functions working correctly by clicking buttons.
+6.2.3.7 Observation: 
+Related forms are displayed on clicking the buttons. 
+Description is displayed. 
+Result: Forget password has no bug. Re-Test-Result: As above
+6.2.4 Test Plan of Home page
+Screen Name: Home page
+Test plan ID: TC: 04
+Application Name: Campus on Mobile 
+Engineers: M. Zubair OR Zainab Sabir
+Testing Cycle: 01 
+6.2.4.1 Purpose: 
+To check that application there we have options on the screen to go forward and must click to further proceed. 
+6.2.4.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.4.3 Environment: 
+Android Studio
+6.2.4.4 Pre-Requisite: 
+Checking Home page. 
+6.2.4.5 Strategy: 
+?Scroll Home page for checking the continuity. 
+?Click on “Dashboard Activity” navigation.
+?Click on “Profile”
+?Make changes for update profile.  
+6.2.4.6 Expected Results: 
+Related screen displayed properly and functions working correctly by clicking buttons.
+6.2.4.7 Observation: 
+?Related forms are displayed on clicking the buttons. 
+?Description is displayed. 
+Result: profile updating has no bug. Re-Test-Result: As above
+6.2.5 Test Plan of Feedback
+Screen Name: Feedback Activity
+Test plan ID: TC: 05
+Application Name: Campus on Mobile 
+Engineers: M. Zubair OR Zainab Sabir
+Testing Cycle: 01 
+6.2.5.1 Purpose: 
+To check that application there we have options on the screen to go forward and must click to further proceed. And Feedback feature only use for students 
+6.2.5.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.5.3 Environment: 
+Android Studio
+6.2.5.4 Pre-Requisite: 
+Checking Feedback Screen. 
+6.2.5.5 Strategy: 
+?Click on “Feedback” button to view page. 
+?Click on “Select Department” button to take department according to student.
+?Click on “Select Semester” button to view enrolled semester.
+?Click on “Select Section” button to put section in that field.
+?Select class and giving feedback about teachers to admin.
+6.2.5.6 Expected Results: 
+ Related screen displayed properly and functions working correctly by clicking buttons.
+6.2.5.7 Observation: 	
+Related forms are displayed on clicking the buttons. 
+Description is displayed. 
+Result: Feedback has no bug. Re-Test-Result: As above
+6.2.6 Test Plan of Timetable Screen
+Screen Name: Timetable Activity
+Test plan ID: TC: 06
+Application Name: Campus on Mobile 
+Engineers: M. Zubair OR Zainab Sabir
+Testing Cycle: 01 
+6.2.6.1 Purpose: 
+To check that application there we have options on the screen to go forward and must click to further proceed. 
+6.2.6.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.6.3 Environment: 
+Android Studio
+6.2.6.4 Pre-Requisite: 
+Checking Timetable Screen. 
+6.2.6.5 Strategy: 
+?Click on “Timetable” button to view page. 
+?Click on “Select Department” button to take department according to student.
+?Click on “Select Semester” button to view enrolled semester.
+?Click on “Select Section” button to put section in that field.
+?Click on “Next” to go next and view Timetable.
+6.2.6.6 Expected Results: 
+ Related screen displayed properly and functions working correctly by clicking buttons.
+6.2.6.7 Observation: 
+Related forms are displayed on clicking the buttons. 
+Description is displayed. 
+Result: Timetable has no bug. Re-Test-Result: As above
+6.2.7 Test Plan of  Communication
+Screen Name: Campus on mobile
+Test plan ID: TC: 07
+Application Name: Campus on Mobile 
+Engineers: M. Zubair OR Zainab Sabir
+Testing Cycle: 01 
+6.2.7.1 Purpose: 
+To check that application there we have options on the screen to go forward and must click to further proceed. 
+6.2.7.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.7.3 Environment: 
+Android Studio
+6.2.7.4 Pre-Requisite: 
+Checking Chat Screen 
+6.2.7.5 Strategy: 
+?Click on “Chat” button to view chat box. 
+?Click on “User list” button to check added users.
+?Click on “type message” field to send a message.
+?Click on “Chat box” button to see users online and their last seen.  
+6.2.7.6Expected Results: 
+Related screen displayed properly and functions working correctly by clicking buttons.
+6.2.7.7Observation: 
+Related forms are displayed on clicking the buttons. 
+Description is displayed. 
+Result: Chat has no bug. Re-Test-Result: As above
+6.2.8 Test Plan of  Attendance Monitoring
+Screen Name: Campus on mobile
+Test plan ID: TC: 07
+Application Name: Campus on Mobile 
+Engineers: M. Zubair OR Zainab Sabir
+Testing Cycle: 01 
+6.2.8.1 Purpose: 
+To check that application there we have options on the screen to go forward and must click to further proceed. 
+6.2.8.2 Scenario: 
+Application options are displayed correctly in right ways wherever they should be, and user must click on it for finding further details about the app and its features.
+6.2.8.3 Environment: 
+Android Studio
+6.2.8.4 Pre-Requisite: 
+Checking monitoring Screen 
+6.2.8.5 Strategy: 
+?Click on “monitoring” button to view monitoring screen. 
+?Select Session, Department, Class and Roll no. 
+?Students view the Attendance through.
+6.2.8.6 Expected Results: 
+Related screen displayed properly and functions working correctly by clicking buttons.
+6.2.8.7 Observation: 
+Related forms are displayed on clicking the buttons. 
+Description is displayed. 
+Result: Monitoring has no bug. Re-Test-Result: As above
+
+
+Chapter7
+Results & Discussions
+The campus on mobile its android based Application for all users. Its user-based application for Students and teachers, firstly users can be register and then they will login to the application through a username and password assigned to them. 
+It’s our first experience in our degree to make this project and there are some restrictions in the project. As our less acquaintance and skill in this specific field and have limited time, not able to fulfil all our hope that we expected while the project got started. So hope these limitations are extensive.
+7.1Register Activity
+Firstly user(Teacher/Student) can register in this app for firebase Authentication
+Registration as a Teacher.
+
+
+           Figure 8Teacher registration
+
+
+
+Registration as a Student.
+
+
+              Figure 9Sstudent register
+7.2Login Activity.
+User(Teacher/Student) can login username or password in Application
+
+
+                 Figure 10Login Activity 
+
+7.3Admin Login Activity
+Only admin can login in this activity, admin which have specific username or password.
+
+
+                Figure 11admin login activity
+
+
+
+7.4Student Home Activity
+Student Interface.
+
+
+7.5Teacher Home Activity
+Teacher Interface.
+
+
+                   Figure 12teacher panel	
+
+
+7.6Admin Home Activity
+Admin Interface.
+
+
+                    Figure 13admin Panel
+
+
+                    Figure 14admin home
+
+
+7.7View Timetable Activity
+
+            Figure 15Timetable Activity
+7.8View Feedback Activity
+
+             Figure 16View Feedback
+
+7.9
+Admin Add Timetable Activity
+
+    Figure 17Admin add timetable
+7.10Admin Add Subject Activity
+
+       Figure 18Admin add subject
+
+
+
+7.11 Dashboard Activity code
+
+                                                                               Figure 19Dashboard code
+
+                                                                              Figure 20dashboard code2
+
+
+Chapter 8
+Conclusion & Future Work
+
+8.1 Conclusion & Scope                          
+ The online attendance management system will reduce human efforts and save time. There is chance of error in manual attendance as well as it required lot of calculation for report generating. We see that in school & in collage attendance are taken manually. It’s difficult to calculate a report. This is not a systematic method where the form can be lost and may be damaged. And folders that it needs some spaces to put in rack or cabinet. Minimize the student cheating by asking their friends to sign the attendance form. This software can reduce time and the database report can be viewed and be printed immediately by the lecturer. Thus, the system is more efficient. In many colleges, hardware is used to take attendance like card swiping. In this technique, there are chances of making proxy entry or failure of hardware, etc. Also there is chance of loss of card as the card is small in size, light weight if the person is irresponsible. The proposed system also can make us to get rid of papers and pages, also helpful for getting notification so it would be beneficial for both students and teachers to get information through this. Students can easily find out teachers by the feature of time table and this confusion would be removed that teachers is present or not in the institute. This also specifies the event scheduling of the institute and is able to get feedback regarding that. By using of the proposed system there will not be chance of errors and we will easily generate reports and will have feedback too. The developed system will very helpful in saving valuable time of students and lecturers, paper and generating report at required time. By using proposed system student attendance will improve. Due to this system parent will get information about attendance of ward. This will improve the performance of student. 
+8.2 Lesson Learnt
+?Learnt that how to work in team. 
+?Learnt about Android studio, java language and android technology, its components and ways how to implement them in our project. 
+?Learnt to work in stress and to be patient. 
+?Learnt to use APIs in our Campus on mobile
+
+8.3 Check Objectives
+
+Objectives	Complete 
+Look at the available tools in market based on the project requirements 	?
+Select the suitable tools for developing the System 	?
+Develop the application Create the application interface and contents Create the database	?
+Combine the application with the database 	?
+Test the features of the application within each development 	?
+                                                                          Table 10 Check Objectives
+
+
+References
+[1] D.F. Zhanga, Y.K Liu, R. M’Hallah and S.C.H. Leung. A simulated annealing with a new neighborhood structure based algorithm for high school timetabling problems. European Journal of Operational Research, Vol. 203, No. 3, 2010, pp. 550-558.
+[2] Z. Lu, J.K. Hao. Adaptive Tabu Search for course timetabling. European journal of operations research, vol. 200, No. 1, 2010, pp. 235–244. 
+[3] T.T. Bereket. Automated Lecture Timetabling Using a Memetic Algorithm. Asia-Pacific Journal of Operational Research, Vol. 25, No. 4, 2008, pp. 451-475. [4] E.K. Burke and S. Petrovic. Recent research directions in automated timetabling. European Journal of Operational Research, Vol. 140, No. 2, 2002, pp. 266-280. 
+[5] A. Caprara, M. Monaci, P. Toth and P.L. Guida, A Lagrangian heuristic algorithm for a real-world train timetabling problem. Discrete Applied Mathematics, Vol. 154, No. 5, 2006. pp. 738-753 
+[6] 6. S. Petrovic, Y. Yang and M. Dror, Case-based selection of initialisation heuristics for metaheuristic examination timetabling. Expert Systems with Applications, vol. 33, No. 3, 2007, pp. 772– 785. 
+[7] W. Legierski, Search Strategy for Constraint-Based Class–Teacher Timetabling. Lecture Notes in Computer Science, vol. 2740, 2003, pp. 247–261. 
+[8] J.J. Thomas, A.T. Khader, B. Belaton, A Visual Analytics Framework for the Examination Timetabling Problem. In proceedings of the Fifth International Conference on Computer Graphics, Imaging and Visualisation, 2008, pp. 305-310. [9] N. Pillay, W. Banzhaf, An informed genetic algorithm for the examination timetabling problem. Applied Soft Computing, vol. 10, No. 3, 2010, pp. 457–467. [10] A.B. Luis E., S.S. Sancho, and O.G. Emilio G. etc. A hybrid grouping genetic algorithm for assigning students to preferred laboratory groups. Expert Systems with Applications, vol. 36, No. 3, PART 2, 2009, pp. 7234–7241.
+[11] Ansari, A. and S. Bojewar, Comparing Genetic Algorithm with MEME–Timetable Generation. International Journal, 2015. 3(3). 
+[12] Sonawane, M.P.A., & Ragha, L. , Hybrid Genetic Algorithm and TABU Search Algorithm to Solve Class Time Table Scheduling Problem. . International Journal of Research Studies in Computer Science and Engineering, 2014. Volume. 1(Issue 4): p. 19-26. 
+[13] Sahargahi, V., & Drakhshi, M. F. (2016). Comparing the Methods of Creating Educational Timetable. International Journal of Computer Science and Network Security (IJCSNS), 16(12), 26. 
+[14] Babaei, H., Karimpour, J., & Hadidi, A. (2015). A survey of approaches for university course timetabling problem. Computers & Industrial Engineering, 86, 43-59. 
+[15] Gao, H., Kwong, S., Fan, B., & Wang, R. (2014). A hybrid particleswarm tabu search algorithm for solving job shop scheduling problems. IEEE Transactions on Industrial Informatics, 10(4), 2044- 2054. 
+[16] Rohini, V., & Natarajan, A. M. (2016). Comparison of genetic algorithm with particle swarm optimisation, ant colony optimisation and tabu search based on university course scheduling system. Indian Journal of Science and Technology, 9(21).
+[17] Alzaqebah, M., & Abdullah, S. (2015). Hybrid bee colony optimization for examination timetabling problems. Computers & Operations Research, 54, 142-154. 
+[18] Mohammad, K.H., J, Problem-solving capacities of spiritual intelligence for artificial intelligence. Social and Behavioral Sciences, 2012: p. 170 – 175. 
+[19] Rohit. P.S, S.M., A Probability Based Object-Oriented Expert System for Generating Time-Table. International Journal of Research in Computer Applications & Information Technology, 2013. Volume 1( Issue 1): p. pp. 52-58. [20] Lu, F., A Curriculum Scheduling System Based on Pooling Algorithm, in Computer and Management (CAMAN), 2011 International Conference2011, May. p. (pp. 1-4). 
+[21] Isaai, M.T., Kanani, A., Tootoonchi, M., & Afzali, H. R. , Intelligent timetable evaluation using fuzzy AHP. . Expert Systems with Applications,, 2011. 38(4): p. 3718-3723.
+[22] KTU STARS Online Registration System -Manual, 1995
+[23] Rational Rose, http:/;www.rational.com 
+[24] Martin Fowler and Kendall Scott, UML Distilled: Applying the stwidard object modeling language, Addison Wesley, 1999. 
+[25] Terry Quatrani. Visual Modeling with Rational Rose 2000 and UML, Addison Wesley, 2000
+[26] E.K. Burke and S. Petrovic, “Recent research directions in automated timetabling,” European Journal of Operational Research, vol. 140 issue 2 pp. 266-280. , 2002 
+[27] A. Chowdhary P. Kakde S. Dhoke S. Ingle R. Rushiya and D. Gawande, “Timetable generation system”. International Journal of Computer Science and Mobile Computing, vol.3 issue 2, 2014.
