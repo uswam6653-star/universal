@@ -57,6 +57,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_payment'])) {
     }
 
     $pdo->prepare("UPDATE system_settings SET setting_value = ? WHERE setting_key = ?")->execute([json_encode($payments), $setting_key]);
+
+    // --- LINKING: Log activity for Member Dashboard ---
+    $log_details = "Invoice: $id | Plan: {$_POST['plan_name']} | Amount: Rs. {$_POST['amount']} | Status: {$_POST['status']}";
+    $pdo->prepare("INSERT INTO sys_activity_logs (user_id, action, details, created_at) VALUES (?, 'PAYMENT', ?, ?)")
+        ->execute([$_POST['member_id'], $log_details, $_POST['payment_date']]);
+
+    // --- LINKING: Update User Plan Metadata ---
+    $uStmt = $pdo->prepare("SELECT identity_no FROM users WHERE id = ?");
+    $uStmt->execute([$_POST['member_id']]);
+    $uMeta = explode('|', $uStmt->fetchColumn() ?? '');
+    $uMeta = array_pad($uMeta, 11, '');
+    $uMeta[0] = $_POST['plan_name']; // Update Plan Name at index 0
+    $newMeta = implode('|', $uMeta);
+    $pdo->prepare("UPDATE users SET identity_no = ? WHERE id = ?")->execute([$newMeta, $_POST['member_id']]);
 }
 
 require_once __DIR__ . '/../../includes/header.php'; 

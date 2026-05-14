@@ -86,6 +86,26 @@ if ($currentPageData) {
         .app-brand-logo { height: 30px; width: auto; } 
         .user-image { width: 30px; height: 30px; object-fit: cover; }
         .nav-link.active { background-color: rgba(var(--bs-primary-rgb), 0.1) !important; color: var(--bs-primary) !important; font-weight: bold; }
+        
+        /* Strict Layout Enforcement to prevent half-screen shifting */
+        @media (min-width: 992px) {
+            .app-sidebar {
+                width: 250px !important;
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                height: 100vh !important;
+                z-index: 1038 !important;
+            }
+            .app-header, .app-main, .app-footer {
+                width: calc(100% - 250px) !important;
+                margin-left: 250px !important;
+                float: right !important;
+            }
+            .app-wrapper {
+                display: block !important;
+            }
+        }
     </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">

@@ -6,6 +6,9 @@ if ($_SESSION['role'] === 'student') {
     header("Location: " . BASE_URL . "dashboards/student/member_dashboard.php");
     exit;
 } elseif ($_SESSION['role'] === 'hod') {
+    header("Location: " . BASE_URL . "dashboards/hod/department_stats.php");
+    exit;
+} elseif ($_SESSION['role'] === 'trainer') {
     header("Location: " . BASE_URL . "dashboards/trainer/dashboard.php");
     exit;
 }

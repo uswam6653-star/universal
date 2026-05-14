@@ -1,207 +1,213 @@
 <?php 
-require_once __DIR__ . '/../../includes/header.php'; 
+require_once __DIR__ . '/../../core/session.php';
+require_once __DIR__ . '/../../core/db.php';
 
-// Fetch Plans from settings
-$stmt = $pdo->prepare("SELECT setting_value FROM system_settings WHERE setting_key = 'gym_membership_plans'");
-$stmt->execute();
-$res = $stmt->fetch();
-$plans = $res ? json_decode($res['setting_value'], true) : [];
+$uid = $_SESSION['user_id'];
+$urole = $_SESSION['role'];
 
-// Fetch Gym Members
-$members = $pdo->query("SELECT id, name, registration_no, is_active, identity_no FROM users WHERE role = 'student' ORDER BY name ASC")->fetchAll();
-
-// Fetch Trainers
-$trainers = $pdo->query("SELECT name FROM users WHERE role = 'trainer'")->fetchAll(PDO::FETCH_COLUMN);
-
-// Metadata Helper
-// Format: 0:phone, 1:gender, 2:dob, 3:join, 4:address, 5:type, 6:photo, 7:pay, 8:end_date, 9:perms, 10:trainer
-function updateMemberPlanMetadata($current, $new_plan, $start_date, $end_date, $pay_status, $trainer) {
-    $parts = array_pad(explode('|', $current), 11, '');
+// --- LOGIC HANDLING ---
+$msg = "";
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['assign_now'])) {
+    $mid = $_POST['client_id'];
+    $tpl_id = $_POST['tpl_id'];
+    $s_date = $_POST['start_date'];
+    $e_date = $_POST['end_date'];
+    $trainer_id = $_POST['trainer_id'] ?: $uid;
+    $p_status = $_POST['payment_status'];
     
-    $parts[3] = $start_date;
-    $parts[5] = $new_plan;
-    $parts[7] = $pay_status;
-    $parts[8] = $end_date;
-    $parts[10] = $trainer; 
-    
-    return implode('|', $parts);
-}
-
-// Handle Assignment
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['assign_plan'])) {
-    $user_id = $_POST['user_id'];
-    $plan_name = $_POST['plan_name'];
-    $start_date = $_POST['start_date'];
-    $end_date = $_POST['end_date'];
-    $pay_status = $_POST['pay_status'];
-    $trainer = $_POST['trainer'];
-
-    // Get current user metadata
-    $stmt = $pdo->prepare("SELECT identity_no FROM users WHERE id = ?");
-    $stmt->execute([$user_id]);
-    $curr_meta = $stmt->fetchColumn() ?: '';
-
-    $new_meta = updateMemberPlanMetadata($curr_meta, $plan_name, $start_date, $end_date, $pay_status, $trainer);
-
-    // Update User
-    $pdo->prepare("UPDATE users SET identity_no = ? WHERE id = ?")->execute([$new_meta, $user_id]);
-    
-    // --- NEW: Log Trainer Assignment if selected ---
-    if (!empty($trainer)) {
-        $stmt = $pdo->prepare("SELECT setting_value FROM system_settings WHERE setting_key = 'gym_trainer_assignments'");
-        $stmt->execute();
-        $res = $stmt->fetch();
-        $assign_logs = $res ? json_decode($res['setting_value'], true) : [];
-        if (!is_array($assign_logs)) $assign_logs = [];
+    // Check for duplicate/active plan
+    $chk = $pdo->prepare("SELECT id FROM complaints WHERE user_id = ? AND subject = 'WORKOUT' AND status = 'Active'");
+    $chk->execute([$mid]);
+    if ($chk->fetch()) {
+        $msg = "err|Member already has an active workout plan!";
+    } else {
+        $tpl = $pdo->prepare("SELECT * FROM workout_templates WHERE id = ?");
+        $tpl->execute([$tpl_id]);
+        $t = $tpl->fetch();
         
-        $new_log = [
-            'id' => uniqid('TR_PLAN_'),
-            'member_id' => $user_id,
-            'member_name' => '', // Will be fetched via JOIN or loop if needed, but display logic handles it
-            'trainer_id' => 0, // In this simple log, we just have the name from post
-            'trainer_name' => $trainer,
-            'type' => 'Membership Plan Support',
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'status' => 'Active'
-        ];
+        $desc = "PLAN: {$t['name']} | LEVEL: {$t['level']} | DUR: {$t['duration']} \n\nEXERCISES:\n{$t['exercises']}";
         
-        // Find member name for log
-        foreach($members as $m) { if($m['id'] == $user_id) { $new_log['member_name'] = $m['name']; break; } }
-        
-        array_unshift($assign_logs, $new_log);
-        $pdo->prepare("UPDATE system_settings SET setting_value = ? WHERE setting_key = 'gym_trainer_assignments'")->execute([json_encode($assign_logs)]);
+        $stmt = $pdo->prepare("INSERT INTO complaints (user_id, subject, description, assigned_to, status, payment_status, created_at, end_date) VALUES (?, 'WORKOUT', ?, ?, 'Active', ?, ?, ?)");
+        $stmt->execute([$mid, $desc, $trainer_id, $p_status, $s_date, $e_date]);
+        $msg = "suc|Plan successfully assigned to the client!";
     }
-    // --- End Sync ---
-
-    $success = "Membership Plan effectively assigned and details updated!";
-    
-    // Refresh member list to show updated data
-    $members = $pdo->query("SELECT id, name, registration_no, is_active, identity_no FROM users WHERE role = 'student' ORDER BY name ASC")->fetchAll();
 }
+
+// Handle Remove
+if (isset($_GET['remove'])) {
+    $pdo->prepare("DELETE FROM complaints WHERE id = ?")->execute([$_GET['remove']]);
+    header("Location: assign_plan.php?msg=suc|Assignment removed");
+    exit();
+}
+
+// --- DATA FETCHING ---
+$templates = $pdo->query("SELECT id, name, level FROM workout_templates ORDER BY name ASC")->fetchAll();
+$clients = $pdo->query("SELECT id, name, registration_no FROM users WHERE role = 'student' ORDER BY name ASC")->fetchAll();
+$trainers = $pdo->query("SELECT id, name FROM users WHERE role IN ('trainer', 'hod', 'admin', 'super_admin') ORDER BY name ASC")->fetchAll();
+
+$filter = $_GET['f'] ?? 'All';
+$sql = "SELECT c.*, u.name as client_name, t.name as trainer_name 
+        FROM complaints c 
+        JOIN users u ON c.user_id = u.id 
+        LEFT JOIN users t ON c.assigned_to = t.id 
+        WHERE c.subject = 'WORKOUT'";
+
+if ($filter == 'Active') $sql .= " AND c.status = 'Active'";
+if ($filter == 'Unpaid') $sql .= " AND c.payment_status = 'Unpaid'";
+if ($filter == 'Completed') $sql .= " AND c.status = 'Completed'";
+
+$sql .= " ORDER BY c.id DESC";
+$assignments = $pdo->query($sql)->fetchAll();
+
+require_once __DIR__ . '/../../includes/header.php'; 
 ?>
 
-<div class="row g-4">
-    <!-- Assignment Form -->
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-header bg-transparent border-0 p-4 pb-0">
-                <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-person-check me-2"></i>Assign Plan to Member</h5>
-            </div>
-            <div class="card-body p-4">
-                <?php if(isset($success)) echo "<div class='alert alert-success small py-2'>$success</div>"; ?>
-                
-                <form method="POST">
-                    <div class="mb-3">
-                        <label class="small fw-bold mb-1">Select Member</label>
-                        <select name="user_id" class="form-select rounded-3" required onchange="populateDefaults(this)">
-                            <option value="">-- Choose Member --</option>
-                            <?php foreach($members as $m): 
-                                $m_meta = array_pad(explode('|', $m['identity_no']), 9, '');
-                            ?>
-                                <option value="<?= $m['id'] ?>" 
-                                    data-plan="<?= htmlspecialchars($m_meta[5]) ?>"
-                                    data-start="<?= htmlspecialchars($m_meta[3]) ?>"
-                                    data-end="<?= htmlspecialchars($m_meta[8]) ?>"
-                                    data-pay="<?= htmlspecialchars($m_meta[7]) ?>"
-                                    data-trainer="<?= htmlspecialchars($m_meta[10] ?? '') ?>">
-                                    <?= htmlspecialchars($m['name']) ?> (<?= $m['registration_no'] ?>)
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="small fw-bold mb-1">Select Membership Plan</label>
-                        <select name="plan_name" id="plan_select" class="form-select rounded-3" required onchange="calculateEndDate()">
-                            <option value="" data-days="0">-- Choose Plan --</option>
-                            <?php foreach($plans as $p): ?>
-                                <option value="<?= htmlspecialchars($p['name']) ?>" data-days="<?= htmlspecialchars($p['duration']) ?>">
-                                    <?= htmlspecialchars($p['name']) ?> (<?= $p['duration'] ?> Days - Rs. <?= $p['price'] ?>)
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="row g-2 mb-3">
-                        <div class="col-6">
-                            <label class="small fw-bold mb-1">Start Date</label>
-                            <input type="date" name="start_date" id="start_date" class="form-control rounded-3" value="<?= date('Y-m-d') ?>" required onchange="calculateEndDate()">
-                        </div>
-                        <div class="col-6">
-                            <label class="small fw-bold mb-1">End Date</label>
-                            <input type="date" name="end_date" id="end_date" class="form-control rounded-3" required>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="small fw-bold mb-1">Payment Status</label>
-                        <select name="pay_status" id="pay_status" class="form-select rounded-3">
-                            <option>Paid</option>
-                            <option>Unpaid</option>
-                            <option>Pending</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="small fw-bold mb-1">Assign Trainer</label>
-                        <select name="trainer" id="trainer" class="form-select rounded-3">
-                            <option value="">None</option>
-                            <?php foreach($trainers as $t): ?>
-                                <option value="<?= htmlspecialchars($t) ?>"><?= htmlspecialchars($t) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <button type="submit" name="assign_plan" class="btn btn-primary w-100 rounded-pill fw-bold">Assign & Update</button>
-                </form>
-            </div>
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="text-danger fw-bold">V3 - LATEST VERSION UPDATED</h1>
+            <h2 class="fw-bold text-primary">Assign Workout Plan 📋</h2>
+            <p class="text-muted">Professional 5-Step Member Assignment Portal</p>
         </div>
     </div>
 
-    <!-- Assigned Members List -->
-    <div class="col-md-8">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-header bg-transparent border-0 p-4">
-                <h5 class="fw-bold mb-0">Current Assignments Overview</h5>
+    <?php 
+    if ($msg || isset($_GET['msg'])) {
+        $m = explode('|', $msg ?: $_GET['msg']);
+        $type = $m[0] == 'suc' ? 'success' : 'danger';
+        echo "<div class='alert alert-$type rounded-4 border-0 shadow-sm mb-4'><i class='bi bi-check-circle-fill me-2'></i>{$m[1]}</div>";
+    }
+    ?>
+
+    <div class="row g-4">
+        <!-- LEFT SIDE: Assign Form -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+                <h5 class="fw-bold mb-4 text-dark"><i class="bi bi-pencil-square me-2"></i> Assign Plan to Member</h5>
+                
+                <form method="POST" id="assignForm">
+                    <!-- Step 1: Member -->
+                    <div class="mb-4">
+                        <label class="small fw-bold text-dark mb-2">Step 1: Select Member</label>
+                        <select name="client_id" class="form-select rounded-3 shadow-sm" required>
+                            <option value="">-- Choose Member --</option>
+                            <?php foreach($clients as $c): ?>
+                                <option value="<?= $c['id'] ?>"><?= htmlspecialchars($c['name']) ?> (<?= $c['registration_no'] ?>)</option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- Step 2: Membership Plan -->
+                    <div class="mb-4">
+                        <label class="small fw-bold text-dark mb-2">Step 2: Select Membership Plan</label>
+                        <select name="tpl_id" class="form-select rounded-3 shadow-sm" required>
+                            <option value="">-- Choose Membership --</option>
+                            <?php 
+                            $plans_raw = $pdo->query("SELECT setting_value FROM system_settings WHERE setting_key = 'gym_membership_plans'")->fetch();
+                            $all_m_plans = $plans_raw ? json_decode($plans_raw['setting_value'], true) : [];
+                            foreach($all_m_plans as $pl): 
+                            ?>
+                                <option value="<?= htmlspecialchars($pl['name']) ?>"><?= htmlspecialchars($pl['name']) ?> (Rs. <?= $pl['price'] ?>)</option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- Step 3: Dates -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label class="small fw-bold text-dark mb-2">Start Date</label>
+                            <input type="date" name="start_date" class="form-control rounded-3 shadow-sm" value="<?= date('Y-m-d') ?>" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="small fw-bold text-dark mb-2">End Date</label>
+                            <input type="date" name="end_date" class="form-control rounded-3 shadow-sm" required>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 & 5: Payment & Trainer -->
+                    <div class="row g-3 mb-5">
+                        <div class="col-6">
+                            <label class="small fw-bold text-dark mb-2">Payment Status</label>
+                            <select name="payment_status" class="form-select rounded-3 shadow-sm">
+                                <option value="Paid">Paid</option>
+                                <option value="Unpaid">Unpaid</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="small fw-bold text-dark mb-2">Assign Trainer</label>
+                            <select name="trainer_id" class="form-select rounded-3 shadow-sm">
+                                <option value="">None</option>
+                                <?php foreach($trainers as $tr): ?>
+                                    <option value="<?= $tr['id'] ?>" <?= $tr['id'] == $uid ? 'selected' : '' ?>><?= htmlspecialchars($tr['name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="assign_now" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-lg">
+                        Assign & Update <i class="bi bi-arrow-right-circle ms-2"></i>
+                    </button>
+                </form>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-light small fw-bold text-uppercase sticky-top">
+        </div>
+
+        <!-- RIGHT SIDE: Overview -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0 text-dark">Current Assignments Overview</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-pill px-3 dropdown-toggle" data-bs-toggle="dropdown">Filter: <?= $filter ?></button>
+                        <ul class="dropdown-menu border-0 shadow rounded-3">
+                            <li><a class="dropdown-item small" href="?f=All">All Plans</a></li>
+                            <li><a class="dropdown-item small" href="?f=Active">Active</a></li>
+                            <li><a class="dropdown-item small" href="?f=Unpaid">Unpaid</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="max-height: 500px;">
+                    <table class="table table-hover align-middle border-0">
+                        <thead class="bg-light sticky-top small fw-bold text-uppercase">
                             <tr>
-                                <th class="ps-4">Member Name</th>
-                                <th>Current Plan</th>
-                                <th>Timeline</th>
-                                <th>Payment</th>
+                                <th class="border-0 ps-3">Member Name</th>
+                                <th class="border-0">Current Plan</th>
+                                <th class="border-0">Timeline</th>
+                                <th class="border-0">Payment</th>
+                                <th class="border-0 text-end pe-3">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($members as $m): 
-                                $meta = array_pad(explode('|', $m['identity_no']), 9, '');
-                                $plan = $meta[5] ?: 'No Plan';
-                                $start = $meta[3] ?: '-';
-                                $end = $meta[8] ?: '-';
-                                $pay = $meta[7] ?: 'Unpaid';
+                            <?php foreach($assignments as $a): 
+                                preg_match('/PLAN: (.*?) \|/', $a['description'], $pm);
+                                $pName = $pm[1] ?? 'No Plan';
                             ?>
-                            <tr>
-                                <td class="ps-4">
-                                    <strong><?= htmlspecialchars($m['name']) ?></strong><br>
-                                    <small class="text-muted"><?= $m['registration_no'] ?></small>
+                            <tr class="border-bottom border-light">
+                                <td class="ps-3 py-4">
+                                    <div class="fw-bold text-dark"><?= htmlspecialchars($a['client_name']) ?></div>
+                                    <small class="text-muted x-small"><?= htmlspecialchars($a['registration_no'] ?? 'ID: '.$a['user_id']) ?></small>
                                 </td>
                                 <td>
-                                    <span class="badge bg-dark"><?= htmlspecialchars($plan) ?></span><br>
-                                    <small class="text-muted"><i class="bi bi-person me-1"></i><?= htmlspecialchars(($meta[10] ?? '') ?: 'No Trainer') ?></small>
+                                    <span class="badge bg-dark rounded-pill px-3 mb-1"><?= htmlspecialchars($pName) ?></span><br>
+                                    <small class="text-muted x-small"><i class="bi bi-person me-1"></i> <?= htmlspecialchars($a['trainer_name'] ?: 'None') ?></small>
                                 </td>
                                 <td>
-                                    <small class="d-block text-success">Start: <?= $start ?></small>
-                                    <small class="d-block text-danger">End: <?= $end ?></small>
+                                    <div class="x-small text-success fw-bold">Start: <?= date('d/m/Y', strtotime($a['created_at'])) ?></div>
+                                    <div class="x-small text-danger fw-bold">End: <?= date('d/m/Y', strtotime($a['end_date'] ?: '+30 days')) ?></div>
                                 </td>
                                 <td>
-                                    <span class="badge <?= $pay == 'Paid' ? 'bg-success' : 'bg-warning text-dark' ?>"><?= htmlspecialchars($pay) ?></span>
+                                    <span class="badge rounded-pill x-small px-3 <?= $a['payment_status']=='Paid'?'bg-success':'bg-warning text-dark' ?>">
+                                        <?= $a['payment_status'] ?>
+                                    </span>
+                                </td>
+                                <td class="text-end pe-3">
+                                    <a href="?remove=<?= $a['id'] ?>" class="btn btn-light btn-sm rounded-circle text-danger" onclick="return confirm('Remove assignment?')"><i class="bi bi-trash"></i></a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
+                            <?php if(empty($assignments)): ?>
+                                <tr><td colspan="5" class="text-center py-5 text-muted">No assignments found.</td></tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -210,57 +216,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['assign_plan'])) {
     </div>
 </div>
 
-<script>
-function populateDefaults(selectEl) {
-    if (!selectEl.value) {
-        document.getElementById('planForm').reset();
-        return;
-    }
-    const opt = selectEl.options[selectEl.selectedIndex];
-    
-    // Auto-select plan if it matches
-    const planSelect = document.getElementById('plan_select');
-    for(let i=0; i<planSelect.options.length; i++) {
-        if(planSelect.options[i].value === opt.dataset.plan) {
-            planSelect.selectedIndex = i;
-            break;
-        }
-    }
-    
-    document.getElementById('start_date').value = opt.dataset.start || new Date().toISOString().split('T')[0];
-    document.getElementById('end_date').value = opt.dataset.end || '';
-    
-    const paySelect = document.getElementById('pay_status');
-    for(let i=0; i<paySelect.options.length; i++) {
-        if(paySelect.options[i].value === opt.dataset.pay) {
-            paySelect.selectedIndex = i;
-            break;
-        }
-    }
-    
-    const trainSelect = document.getElementById('trainer');
-    for(let i=0; i<trainSelect.options.length; i++) {
-        if(trainSelect.options[i].value === opt.dataset.trainer) {
-            trainSelect.selectedIndex = i;
-            break;
-        }
-    }
-}
-
-function calculateEndDate() {
-    const start_date = document.getElementById('start_date').value;
-    const planSelect = document.getElementById('plan_select');
-    const selectedOpt = planSelect.options[planSelect.selectedIndex];
-    
-    if (start_date && selectedOpt.value) {
-        const days = parseInt(selectedOpt.dataset.days);
-        if (days > 0) {
-            const result = new Date(start_date);
-            result.setDate(result.getDate() + days);
-            document.getElementById('end_date').value = result.toISOString().split('T')[0];
-        }
-    }
-}
-</script>
+<style>
+    .x-small { font-size: 0.7rem; }
+    .transition-all { transition: all 0.3s ease; }
+    .form-select, .form-control { border: 1px solid #dee2e6; padding: 0.75rem 1rem; }
+    .form-select:focus, .form-control:focus { border-color: #0d6efd; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1); }
+</style>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>

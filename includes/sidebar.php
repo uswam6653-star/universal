@@ -10,7 +10,7 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
 
                 <?php
-                function buildMenu($pdo, $parentId = 0, $userRole, $currentUrl, $userPerms = [])
+                function buildMenu($pdo, $userRole, $currentUrl, $parentId = 0, $userPerms = [])
                 {
                     // Fetch all pages for this level
                     $stmt = $pdo->prepare("SELECT * FROM sys_pages WHERE parent_id = ? ORDER BY sort_order ASC");
@@ -62,7 +62,7 @@
 
                         if ($hasChildren) {
                             echo '<ul class="nav nav-treeview">';
-                            buildMenu($pdo, $item['id'], $userRole, $currentUrl, $userPerms);
+                            buildMenu($pdo, $userRole, $currentUrl, $item['id'], $userPerms);
                             echo '</ul>';
                         }
                         echo '</li>';
@@ -74,7 +74,7 @@
                 $cur = str_replace(['universal/', 'project/'], '', $cur);
                 
                 $uPerms = $_SESSION['granular_perms'] ?? [];
-                buildMenu($pdo, 0, $_SESSION['role'], $cur, $uPerms);
+                buildMenu($pdo, $_SESSION['role'], $cur, 0, $uPerms);
                 ?>
 
             </ul>

@@ -14,7 +14,13 @@ $userData = $member->fetch();
 $meta = explode('|', $userData['identity_no'] ?? '');
 $planName = $meta[0] ?? 'Basic Membership';
 $expiryDate = $meta[8] ?? 'N/A';
-$trainerId = $meta[10] ?? 0;
+$trainerMeta = $meta[10] ?? '';
+$trainerId = 0;
+if (strpos($trainerMeta, 'trainer:') !== false) {
+    $trainerId = (int)str_replace('trainer:', '', $trainerMeta);
+} else {
+    $trainerId = (int)$trainerMeta;
+}
 
 // Fetch Trainer Name
 $trainerName = 'Not Assigned';
@@ -46,9 +52,16 @@ $paymentLogs = $payments->fetchAll();
                 <div class="col-md-8">
                     <h1 class="fw-bold mb-1">Hello, <?= htmlspecialchars($_SESSION['name']) ?>! 👋</h1>
                     <p class="lead opacity-75 mb-4">You're on the <strong><?= htmlspecialchars($planName) ?></strong> plan.</p>
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-3 align-items-center">
                         <span class="badge bg-primary px-3 rounded-pill py-2">Member ID: <?= $userData['registration_no'] ?></span>
                         <span class="badge bg-warning text-dark px-3 rounded-pill py-2">Expires: <?= $expiryDate ?></span>
+                        <?php 
+                        $lastPay = $paymentLogs[0]['details'] ?? '';
+                        $isPaid = (strpos($lastPay, 'Status: Paid') !== false);
+                        ?>
+                        <span class="badge <?= $isPaid ? 'bg-success' : 'bg-danger' ?> px-3 rounded-pill py-2">
+                            Payment: <?= $isPaid ? 'Paid ✅' : 'Pending ⏳' ?>
+                        </span>
                     </div>
                 </div>
             </div>

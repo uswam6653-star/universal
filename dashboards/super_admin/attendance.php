@@ -1,227 +1,180 @@
 <?php 
+require_once __DIR__ . '/../../core/session.php';
+require_once __DIR__ . '/../../core/db.php';
+
+// Fetch today's stats
+$today = date('Y-m-d');
+$stats = $pdo->query("SELECT status, count(*) as count FROM gym_attendance WHERE date = '$today' GROUP BY status")->fetchAll(PDO::FETCH_KEY_PAIR);
+$total_in = $stats['IN'] ?? 0;
+$total_out = $stats['OUT'] ?? 0;
+
+$recent = $pdo->query("SELECT a.*, u.name, u.registration_no FROM gym_attendance a JOIN users u ON a.user_id = u.id WHERE a.date = '$today' ORDER BY a.created_at DESC LIMIT 10")->fetchAll();
+
+$members = $pdo->query("SELECT id, name, registration_no FROM users WHERE role = 'student' ORDER BY name ASC")->fetchAll();
+
 require_once __DIR__ . '/../../includes/header.php'; 
+?>
 
-// Role and User Context
-$role = $_SESSION['role'];
-$uid = $_SESSION['user_id'];
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        <!-- Manual Attendance Entry -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white">
+                <div class="card-body p-5">
+                    <div class="text-center mb-5">
+                        <div class="avatar-lg bg-primary bg-opacity-10 rounded-circle p-4 d-inline-block mb-3">
+                            <i class="bi bi-person-check text-primary h1 mb-0"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark">Manual Attendance Portal ✍️</h2>
+                        <p class="text-muted">Select a member to mark their check-in or check-out.</p>
+                    </div>
 
-// Handling Actions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['mark_attendance'])) {
-        $mid = $_POST['member_id'];
-        $status = $_POST['status']; // 'Present' or 'Absent'
+                    <div id="alert-container"></div>
+
+                    <div class="p-4 bg-light rounded-4 mb-4">
+                        <label class="small fw-bold text-uppercase text-muted mb-3 d-block">Search & Select Member</label>
+                        <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden bg-white">
+                            <span class="input-group-text border-0 bg-white ps-4"><i class="bi bi-search"></i></span>
+                            <select id="member-select" class="form-select border-0 py-3 select2-basic">
+                                <option value="">-- Choose a Member --</option>
+                                <?php foreach($members as $m): ?>
+                                    <option value="<?= $m['id'] ?>"><?= htmlspecialchars($m['name']) ?> (<?= $m['registration_no'] ?>)</option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <button onclick="markAttendance('IN')" class="btn btn-success w-100 py-3 rounded-4 fw-bold shadow-sm">
+                                <i class="bi bi-box-arrow-in-right me-2"></i> Mark Check-In
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button onclick="markAttendance('OUT')" class="btn btn-primary w-100 py-3 rounded-4 fw-bold shadow-sm">
+                                <i class="bi bi-box-arrow-right me-2"></i> Mark Check-Out
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 border-top pt-4">
+                        <h6 class="fw-bold text-muted mb-3">Quick Search Tips:</h6>
+                        <ul class="small text-muted">
+                            <li>You can search by Member Name or Registration ID.</li>
+                            <li>System automatically prevents duplicate check-ins within 2 minutes.</li>
+                            <li>Membership expiry is checked automatically during check-in.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Stats & Activity -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white p-4">
+                <h5 class="fw-bold mb-4 d-flex justify-content-between align-items-center">
+                    Today's Attendance Stats 📊
+                    <span class="badge bg-danger rounded-pill pulse-badge x-small">LIVE</span>
+                </h5>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-4 text-center border border-success border-opacity-10">
+                            <h2 class="fw-bold text-success mb-0" id="stat-in"><?= $total_in ?></h2>
+                            <small class="text-success fw-bold x-small">IN SESSIONS</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-4 text-center border border-primary border-opacity-10">
+                            <h2 class="fw-bold text-primary mb-0" id="stat-out"><?= $total_out ?></h2>
+                            <small class="text-primary fw-bold x-small">COMPLETED</small>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold mb-3">Recent Activity Feed</h6>
+                <div class="activity-list overflow-auto" style="max-height: 500px;" id="activity-feed">
+                    <?php foreach($recent as $r): ?>
+                    <div class="activity-item d-flex align-items-center p-3 mb-2 bg-light rounded-3 border-start border-4 <?= $r['status'] == 'IN' ? 'border-success' : 'border-primary' ?>">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold mb-0 small"><?= htmlspecialchars($r['name']) ?></h6>
+                            <small class="text-muted x-small"><?= $r['registration_no'] ?> • <?= date('h:i A', strtotime($r['created_at'])) ?></small>
+                        </div>
+                        <span class="badge rounded-pill x-small <?= $r['status'] == 'IN' ? 'bg-success' : 'bg-primary' ?>"><?= $r['status'] ?></span>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function markAttendance(type) {
+        const userId = document.getElementById('member-select').value;
+        if(!userId) {
+            showAlert('Please select a member first!', 'warning');
+            return;
+        }
+
+        fetch('process_attendance.php', {
+            method: 'POST',
+            body: JSON.stringify({ user_id: userId, forced_status: type })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                showAlert(`${data.name}: ${data.msg}`, 'success');
+                updateUI(data);
+            } else {
+                showAlert(data.msg, 'danger');
+            }
+        });
+    }
+
+    function showAlert(msg, type) {
+        const container = document.getElementById('alert-container');
+        container.innerHTML = `<div class="alert alert-${type} rounded-4 border-0 shadow-sm animate__animated animate__fadeInDown">${msg}</div>`;
+        setTimeout(() => {
+            const alert = container.querySelector('.alert');
+            if(alert) {
+                alert.classList.replace('animate__fadeInDown', 'animate__fadeOutUp');
+                setTimeout(() => container.innerHTML = '', 500);
+            }
+        }, 3000);
+    }
+
+    function updateUI(data) {
+        const feed = document.getElementById('activity-feed');
+        const item = document.createElement('div');
+        const color = data.status === 'IN' ? 'success' : 'primary';
+        item.className = `activity-item d-flex align-items-center p-3 mb-2 bg-light rounded-3 border-start border-4 border-${color} animate__animated animate__slideInLeft`;
+        item.innerHTML = `
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-0 small">${data.name}</h6>
+                <small class="text-muted x-small">${data.time}</small>
+            </div>
+            <span class="badge rounded-pill x-small bg-${color}">${data.status}</span>
+        `;
+        feed.prepend(item);
         
-        // Check if already marked today
-        $check = $pdo->prepare("SELECT id FROM sys_activity_logs WHERE user_id = ? AND action = 'ATTENDANCE' AND DATE(created_at) = CURRENT_DATE");
-        $check->execute([$mid]);
-        
-        if ($check->fetch()) {
-            $pdo->prepare("UPDATE sys_activity_logs SET details = ? WHERE user_id = ? AND action = 'ATTENDANCE' AND DATE(created_at) = CURRENT_DATE")->execute([$status, $mid]);
-            $success = "Attendance updated for the member.";
+        // Update counters
+        if(data.status === 'IN') {
+            document.getElementById('stat-in').innerText = parseInt(document.getElementById('stat-in').innerText) + 1;
         } else {
-            $pdo->prepare("INSERT INTO sys_activity_logs (user_id, action, details) VALUES (?, 'ATTENDANCE', ?)")->execute([$mid, $status]);
-            $success = "Attendance marked successfully!";
+            document.getElementById('stat-out').innerText = parseInt(document.getElementById('stat-out').innerText) + 1;
         }
     }
-}
+</script>
 
-// Filtering Inputs
-$f_date = $_GET['f_date'] ?? date('Y-m-d');
-$f_trainer = $_GET['f_trainer'] ?? '';
-$f_search = $_GET['f_search'] ?? '';
-
-// Build Query based on constraints
-$query = "
-    SELECT u.id, u.name, u.roll_no, a.details as status, a.created_at as check_in, t.name as trainer_name
-    FROM users u
-    LEFT JOIN sys_activity_logs a ON u.id = a.user_id AND a.action = 'ATTENDANCE' AND DATE(a.created_at) = :f_date
-    LEFT JOIN complaints c ON u.id = c.user_id AND c.subject = 'WORKOUT'
-    LEFT JOIN users t ON c.assigned_to = t.id
-    WHERE u.role = 'student'
-";
-
-$params = [':f_date' => $f_date];
-
-if (!empty($f_trainer)) {
-    $query .= " AND c.assigned_to = :f_trainer";
-    $params[':f_trainer'] = $f_trainer;
-}
-
-if (!empty($f_search)) {
-    $query .= " AND (u.name LIKE :f_search OR u.roll_no LIKE :f_search)";
-    $params[':f_search'] = "%$f_search%";
-}
-
-// Special check for Trainer role: only show their assigned members
-if ($role == 'hod') {
-    $query .= " AND c.assigned_to = :my_uid";
-    $params[':my_uid'] = $uid;
-}
-
-$query .= " GROUP BY u.id ORDER BY u.name ASC";
-$stmt = $pdo->prepare($query);
-$stmt->execute($params);
-$attendanceList = $stmt->fetchAll();
-
-// Statistics Calculation
-$totalM = count($attendanceList);
-$presentM = 0; $absentM = 0;
-foreach($attendanceList as $al) {
-    if($al['status'] == 'Present') $presentM++;
-    elseif($al['status'] == 'Absent') $absentM++;
-}
-$perc = ($totalM > 0) ? round(($presentM / $totalM) * 100) : 0;
-
-$trainers = $pdo->query("SELECT id, name FROM users WHERE role = 'hod'")->fetchAll();
-?>
-
-<div class="row g-4 mb-4">
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-dark text-white text-center">
-            <h1 class="fw-bold mb-0"><?= $totalM ?></h1>
-            <small class="text-uppercase fw-bold opacity-50">Total Members</small>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-primary text-white text-center">
-            <h1 class="fw-bold mb-0 text-white"><?= $presentM ?></h1>
-            <small class="text-uppercase fw-bold opacity-50">Present Today</small>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-danger text-white text-center">
-            <h1 class="fw-bold mb-0"><?= $absentM ?></h1>
-            <small class="text-uppercase fw-bold opacity-50">Absent</small>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-success text-white text-center">
-            <h1 class="fw-bold mb-0"><?= $perc ?>%</h1>
-            <small class="text-uppercase fw-bold opacity-50">Attendance Ratio</small>
-        </div>
-    </div>
-</div>
-
-<div class="card border-0 shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-transparent border-0 p-4 pb-0">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold mb-0">Attendance Controls & Filters</h5>
-            <div class="d-flex gap-2">
-                <button onclick="window.print()" class="btn btn-sm btn-outline-dark rounded-pill px-3"><i class="bi bi-printer me-1"></i>Print PDF</button>
-            </div>
-        </div>
-    </div>
-    <div class="card-body p-4">
-        <form method="GET" class="row g-3">
-            <div class="col-md-3">
-                <label class="small fw-bold">Select Date</label>
-                <input type="date" name="f_date" class="form-control rounded-3" value="<?= $f_date ?>">
-            </div>
-            <?php if($role != 'hod'): ?>
-            <div class="col-md-3">
-                <label class="small fw-bold">By Trainer</label>
-                <select name="f_trainer" class="form-select rounded-3">
-                    <option value="">All Trainers</option>
-                    <?php foreach($trainers as $tr): ?>
-                        <option value="<?= $tr['id'] ?>" <?= ($f_trainer == $tr['id']) ? 'selected' : '' ?>><?= $tr['name'] ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <?php endif; ?>
-            <div class="col-md-4">
-                <label class="small fw-bold">Search Member</label>
-                <input type="text" name="f_search" class="form-control rounded-3" placeholder="Name or ID..." value="<?= $f_search ?>">
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100 rounded-3">Apply Filters</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light text-uppercase small fw-bold">
-                    <tr>
-                        <th class="ps-4">Member Info</th>
-                        <th>Assigned Trainer</th>
-                        <th>Time</th>
-                        <th>Status</th>
-                        <th class="text-end pe-4">Quick Mark</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($attendanceList as $a): ?>
-                    <tr>
-                        <td class="ps-4">
-                            <strong><?= htmlspecialchars($a['name']) ?></strong><br>
-                            <small class="text-muted">ID: <?= $a['roll_no'] ?></small>
-                        </td>
-                        <td><span class="badge bg-light text-dark border"><?= $a['trainer_name'] ?: 'No Trainer' ?></span></td>
-                        <td><?= $a['check_in'] ? date('h:i A', strtotime($a['check_in'])) : '--:--' ?></td>
-                        <td>
-                            <?php if($a['status'] == 'Present'): ?>
-                                <span class="badge bg-success rounded-pill px-3">PRESENT</span>
-                            <?php elseif($a['status'] == 'Absent'): ?>
-                                <span class="badge bg-danger rounded-pill px-3">ABSENT</span>
-                            <?php else: ?>
-                                <span class="badge bg-secondary opacity-50 rounded-pill px-3">NOT MARKED</span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="text-end pe-4">
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="member_id" value="<?= $a['id'] ?>">
-                                <div class="btn-group btn-group-sm">
-                                    <button type="submit" name="mark_attendance" value="Present" class="btn btn-outline-success border-2 rounded-start-pill px-3" name="status" title="Mark Present">P</button>
-                                    <button type="submit" name="mark_attendance" value="Absent" class="btn btn-outline-danger border-2 rounded-middle px-3" name="status" title="Mark Absent">A</button>
-                                    <a href="?view_history=<?= $a['id'] ?>" class="btn btn-outline-dark border-2 rounded-end-pill px-3" title="View History"><i class="bi bi-clock-history"></i></a>
-                                </div>
-                                <input type="hidden" name="status" value=""> 
-                            </form>
-                            <script>
-                                // Fixing button value submission
-                                document.querySelectorAll('button[name="mark_attendance"]').forEach(btn => {
-                                    btn.addEventListener('click', function() {
-                                        this.form.querySelector('input[name="status"]').value = this.value;
-                                    });
-                                });
-                            </script>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<?php 
-// Member Specific History Logic
-if(isset($_GET['view_history'])): 
-    $view_id = $_GET['view_history'];
-    $history = $pdo->prepare("SELECT * FROM sys_activity_logs WHERE user_id = ? AND action = 'ATTENDANCE' ORDER BY created_at DESC");
-    $history->execute([$view_id]);
-    $h_data = $history->fetchAll();
-?>
-<div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content rounded-4 border-0">
-            <div class="modal-header border-0 p-4"><h5 class="fw-bold mb-0">Attendance History</h5><a href="attendance.php" class="btn-close"></a></div>
-            <div class="modal-body p-4 pt-0">
-                <table class="table table-sm">
-                    <thead><tr><th>Date</th><th>Time</th><th>Status</th></tr></thead>
-                    <tbody>
-                        <?php foreach($h_data as $hd): ?>
-                        <tr><td><?= date('d M Y', strtotime($hd['created_at'])) ?></td><td><?= date('h:i A', strtotime($hd['created_at'])) ?></td><td><?= $hd['details'] ?></td></tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
+<style>
+    .x-small { font-size: 0.7rem; }
+    .pulse-badge { animation: pulse 2s infinite; }
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+</style>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
