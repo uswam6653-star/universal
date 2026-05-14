@@ -1,5 +1,5 @@
 <?php
-set_time_limit(60);
+set_time_limit(5);
 require_once __DIR__ . '/../core/session.php';
 
 // 1. Fetch System Settings
@@ -86,11 +86,6 @@ if ($currentPageData) {
         .app-brand-logo { height: 30px; width: auto; } 
         .user-image { width: 30px; height: 30px; object-fit: cover; }
         .nav-link.active { background-color: rgba(var(--bs-primary-rgb), 0.1) !important; color: var(--bs-primary) !important; font-weight: bold; }
-        /* ===== Center & Constrain Main Content ===== */
-        .app-content .container-fluid {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
     </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
