@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-4">
                 <label class="form-label d-flex justify-content-between">
                     Secure Password
-                    <a href="#" class="text-primary text-decoration-none" style="font-size: 11px;">Recover?</a>
+                    <a href="forgot_password.php" class="text-primary text-decoration-none" style="font-size: 11px;">Recover?</a>
                 </label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>

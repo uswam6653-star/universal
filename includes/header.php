@@ -9,13 +9,23 @@ while ($row = $stmt->fetch()) {
     $settings[$row['setting_key']] = $row['setting_value'];
 }
 
-// 2. Identify Current Page & Security Check
-$current_url = substr($_SERVER['SCRIPT_NAME'], strlen('/universal/')); // Adjust offset
+// 2. Identify Current Page & Security Check (Robust URL detection)
+$script_path = $_SERVER['SCRIPT_NAME'];
+$current_url = basename($script_path); // Default to filename
+if (strpos($script_path, '/dashboards/') !== false) {
+    $current_url = substr($script_path, strpos($script_path, 'dashboards/'));
+}
 $db_url_match = $current_url; 
-
-// Fetch Page Info
-$pageStmt = $pdo->prepare("SELECT * FROM sys_pages WHERE page_url LIKE ? LIMIT 1");
-$pageStmt->execute(["%$current_url%"]); 
+// Fetch Page Info (Prioritize the row that this user's role actually has access to)
+$role = $_SESSION['role'] ?? 'guest';
+$pageStmt = $pdo->prepare("
+    SELECT p.* FROM sys_pages p
+    LEFT JOIN role_access ra ON p.id = ra.page_id AND ra.role_key = ?
+    WHERE p.page_url LIKE ? 
+    ORDER BY (ra.role_key IS NOT NULL) DESC
+    LIMIT 1
+");
+$pageStmt->execute([$role, "%$current_url%"]); 
 $currentPageData = $pageStmt->fetch();
 
 $pageTitle = $currentPageData['page_name'] ?? 'Dashboard';
